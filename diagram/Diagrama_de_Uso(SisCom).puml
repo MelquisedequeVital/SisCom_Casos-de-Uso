@@ -1,17 +1,28 @@
 @startuml
+' Definição dos Atores e Hierarquia
+actor "Usuário do Sistema" as US
+actor "Administrador" as Admin
+actor "Usuário Comum" as UC
+actor "Usuário Requerente" as UReq
+actor "Usuário Requerido" as URec
+actor "Gestor" as Gestor
 
-:Usuário do Sistema: as UdS
-:Usuário Comum: as UC
-:Usuário Requerente: as Uente
-:Usuário Requerido: as Uido
-:Administrador: as Admin
-:Gestor:
-
-UdS <|-- UC
-UC <|-- Uente
-UC <|-- Uido
+US <|-- Admin
+US <|-- UC
+UC <|-- UReq
+UC <|-- URec
 UC <|-- Gestor
-UdS <|-- Admin
 
+' Definição dos Casos de Uso
+usecase (Arquivar chat) as UC_Arquivar
+usecase (Encerrar chamado) as UC_Encerrar
+usecase (Enviar arquivos) as UC_Enviar
+usecase (Receber arquivos) as UC_Receber
+
+' Associações
+US --- UC_Arquivar
+US --- UC_Encerrar
+US --- UC_Enviar
+US --- UC_Receber
 
 @enduml

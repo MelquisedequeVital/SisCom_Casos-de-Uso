@@ -42,4 +42,7 @@ jobs:
                   git add "diagram/Diagrama_de_Uso(SisCom).pdf"
 
                   git commit -m "Automação: PDF do PlantUML atualizado" || echo "Sem alterações no diagrama."
+                  
+                  git pull --rebase origin main
+
                   git push

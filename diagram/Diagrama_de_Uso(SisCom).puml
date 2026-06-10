@@ -7,6 +7,7 @@ actor "Usuário Requerente" as UReq
 actor "Usuário Requerido" as URec
 actor "Gestor" as Gestor
 
+
 US <|-- Admin
 US <|-- UC
 UC <|-- UReq
@@ -15,14 +16,50 @@ UC <|-- Gestor
 
 ' Definição dos Casos de Uso
 usecase (Arquivar chat) as UC_Arquivar
-usecase (Encerrar chamado) as UC_Encerrar
-usecase (Enviar arquivos) as UC_Enviar
-usecase (Receber arquivos) as UC_Receber
 
-' Associações
+' Autenticação e Segurança
+package "Autenticação e Segurança" {
+    usecase (Login) as UC_Login
+    usecase (Definir Senha) as UC_DefinirSenha
+    usecase (Redefinir Credenciais) as UC_RedefinirCredenciais
+    usecase (Gerenciar Acessos) as UC_GerenciarAcessos
+}
+
+' Comunicação 
+package "Comunicação" {
+    usecase (Trocar Mensagens) as UC_TrocarMensagens
+    usecase (Iniciar Chat Direto) as UC_ChatDireto
+}
+
+' Gerenciamento de Chamados
+package "Gerenciamento de Chamados" {
+    usecase(Abrir Chamado) as UC_AbrirChamado
+    usecase(Visualizar Filas de Chamados) as UC_VisualizarFilas
+    usecase(Encerrar Chamado) as UC_EncerrarChamado
+}
+
+
+' Associações (Para organizar depois)
 US --- UC_Arquivar
-US --- UC_Encerrar
-US --- UC_Enviar
-US --- UC_Receber
+
+' Usuário do Sistema (todos herdam)
+US --- UC_Login
+US --- UC_TrocarMensagens
+
+' Usuário Comum
+UC --- UC_DefinirSenha 
+'(essa de definir senha eu não tenho certeza)
+UC --- UC_EncerrarChamado
+UC --- UC_VisualizarFilas
+
+' Usuário Requerente
+UReq --- UC_AbrirChamado
+
+' Gestor
+Gestor --- UC_ChatDireto
+
+' Administrador
+Admin --- UC_GerenciarAcessos
+Admin --- UC_RedefinirCredenciais
 
 @enduml

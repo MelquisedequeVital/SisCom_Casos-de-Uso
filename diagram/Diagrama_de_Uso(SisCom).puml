@@ -1,4 +1,4 @@
-@startuml
+@startuml 
 ' Definição dos Atores e Hierarquia
 actor "Usuário do Sistema" as US
 actor "Administrador" as Admin
@@ -14,8 +14,6 @@ UC <|-- UReq
 UC <|-- URec
 UC <|-- Gestor
 
-' Definição dos Casos de Uso
-usecase (Arquivar chat) as UC_Arquivar
 
 ' Autenticação e Segurança
 package "Autenticação e Segurança" {
@@ -33,33 +31,30 @@ package "Comunicação" {
 
 ' Gerenciamento de Chamados
 package "Gerenciamento de Chamados" {
-    usecase(Abrir Chamado) as UC_AbrirChamado
-    usecase(Visualizar Filas de Chamados) as UC_VisualizarFilas
-    usecase(Encerrar Chamado) as UC_EncerrarChamado
+    usecase (Abrir Chamado) as UC_AbrirChamado
+    usecase (Visualizar Filas de Chamados) as UC_VisualizarFilas
+    usecase (Encerrar Chamado) as UC_EncerrarChamado
 }
 
 
-' Associações (Para organizar depois)
-US --- UC_Arquivar
-
 ' Usuário do Sistema (todos herdam)
-US --- UC_Login
-US --- UC_TrocarMensagens
+US --> UC_Login
+US --> UC_TrocarMensagens
 
 ' Usuário Comum
-UC --- UC_DefinirSenha 
+UC --> UC_DefinirSenha 
 '(essa de definir senha eu não tenho certeza)
-UC --- UC_EncerrarChamado
-UC --- UC_VisualizarFilas
+UC --> UC_EncerrarChamado
+UC --> UC_VisualizarFilas
 
 ' Usuário Requerente
-UReq --- UC_AbrirChamado
+UReq --> UC_AbrirChamado
 
 ' Gestor
-Gestor --- UC_ChatDireto
+Gestor --> UC_ChatDireto
 
 ' Administrador
-Admin --- UC_GerenciarAcessos
-Admin --- UC_RedefinirCredenciais
+Admin --> UC_GerenciarAcessos
+Admin --> UC_RedefinirCredenciais
 
 @enduml

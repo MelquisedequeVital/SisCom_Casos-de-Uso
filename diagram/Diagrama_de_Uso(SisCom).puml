@@ -21,16 +21,16 @@ package "Autenticação e Segurança" {
     usecase (Definir Senha) as UC_DefinirSenha
     usecase (Redefinir Credenciais) as UC_RedefinirCredenciais
     usecase (Gerenciar Acessos) as UC_GerenciarAcessos
-    usecase (Vizualizar logs de acesso) as UC_logs
+    usecase (Visualizar logs de acesso) as UC_logs
 }
 
 ' Comunicação 
 package "Comunicação" {
     usecase (Trocar Mensagens) as UC_TrocarMensagens
-    usecase (Redigir Mensagem Offline) as UC_TrocarMensagensOffline
-    usecase (Receber Notificação de Mensagem) as UC_ReceberNotificacao
+    usecase (Redigir Mensagens Offline) as UC_TrocarMensagensOffline
+    usecase (Receber Notificações de Mensagens) as UC_ReceberNotificacao
     usecase (Iniciar Chat Direto) as UC_ChatDireto
-    usecase (Enviar e Receber anexos) as UC_Anexo
+    usecase (Enviar e Receber Anexos) as UC_Anexo
     usecase (Consultar Histórico de Chats) as UC_Historico
     usecase (Consultar Histórico de Chats Offline) as UC_Historico_Offline
 }
@@ -45,32 +45,33 @@ package "Gerenciamento de Chamados" {
 
 package "Gerenciamento de Reunião e Setores" {
     usecase (Manter Reunião) as UC_ManterReuniao
-    usecase (Visualizar Calendário) as UC_Calendario
     usecase (Receber Notificação de Convites) as UC_NotificaConvite
-    usecase (Manter Setores) as UC_Setores
-    usecase (Visualizar Relatório de Departamento) as UC_Relatorio
-    usecase (Auditar Histórico Setorial\n- Pesquisa Avançada) as UC_Historico_Departamento
     usecase (Gerenciar Salas e\nAgendamentos Globais) as UC_GerenciarSalas
+    usecase (Visualizar Calendário) as UC_Calendario
+    usecase (Manter Setores) as UC_Setores
+    usecase (Visualizar Relatórios de Departamentos) as UC_Relatorio
+    usecase (Auditar Histórico Setorial\n- Pesquisa Avançada) as UC_Historico_Departamento
 }
-
+package "Utilitários" {
+    usecase (Visualizar Status do Sistema) as UC_NotificarStatus
+}
 
 
 
 ' Usuário do Sistema (todos herdam)
 US --- UC_Login
+US --- UC_DefinirSenha 
 US --- UC_TrocarMensagens
 US --- UC_Historico
-US --- UC_Calendario
 UC_TrocarMensagens <-- UC_Anexo: <<extend>>
 UC_TrocarMensagens <-- UC_TrocarMensagensOffline: <<extend>>
 UC_TrocarMensagens <-- UC_ReceberNotificacao: <<extend>>
 UC_Historico <-- UC_Historico_Offline: <<extend>>
 
 ' Usuário Comum
-UC --- UC_DefinirSenha 
-'(essa de definir senha eu não tenho certeza)
 UC --- UC_EncerrarChamado
 UC --- UC_VisualizarFilas
+UC --- UC_Calendario
 
 ' Usuário Requerente
 UReq --- UC_AbrirChamado

@@ -70,6 +70,7 @@ P_Comunicação -[hidden]down-> P_Reunião
 
 ' Usuário do Sistema (todos herdam)
 US --- UC_Login
+US --- UC_DefinirSenha 
 US --- UC_TrocarMensagens
 US --- UC_Calendario
 
@@ -79,6 +80,7 @@ UC --- UC_DefinirSenha
 '(essa de definir senha eu não tenho certeza)
 UC --- UC_EncerrarChamado
 UC --- UC_VisualizarFilas
+UC --- UC_Calendario
 
 ' Usuário Requerente
 UReq --- UC_AbrirChamado

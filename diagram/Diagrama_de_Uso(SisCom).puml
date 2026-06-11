@@ -27,10 +27,8 @@ package "Autenticação e Segurança" {
 ' Comunicação 
 package "Comunicação" {
     usecase (Trocar Mensagens) as UC_TrocarMensagens
-    usecase (Receber Notificação de Mensagem) as UC_ReceberNotificacao
     usecase (Iniciar Chat Direto) as UC_ChatDireto
     usecase (Consultar Histórico de Chats) as UC_Historico
-    usecase (Consultar Histórico de Chats Offline) as UC_Historico_Offline
 }
 
 ' Gerenciamento de Chamados
@@ -57,10 +55,8 @@ package "Gerenciamento de Reunião e Setores" {
 ' Usuário do Sistema (todos herdam)
 US --- UC_Login
 US --- UC_TrocarMensagens
-US --- UC_Historico
 US --- UC_Calendario
-UC_TrocarMensagens <-- UC_ReceberNotificacao: <<extend>>
-UC_Historico <-- UC_Historico_Offline: <<extend>>
+UC_Historico .> UC_TrocarMensagens : <<extend>>
 
 ' Usuário Comum
 UC --- UC_DefinirSenha 
@@ -76,8 +72,8 @@ Gestor --- UC_ChatDireto
 Gestor --- UC_ManterReuniao
 Gestor --- UC_Relatorio
 Gestor --- UC_Historico_Departamento
-UC_ChatDireto --> UC_TrocarMensagens : <<include>>
-UC_ManterReuniao <-- UC_NotificaConvite: <<extend>>
+UC_ChatDireto .> UC_TrocarMensagens : <<include>>
+UC_ManterReuniao <. UC_NotificaConvite: <<extend>>
 
 ' Administrador
 Admin --- UC_GerenciarAcessos

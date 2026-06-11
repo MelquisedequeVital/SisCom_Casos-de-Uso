@@ -44,9 +44,9 @@ package "Comunicação e Chamados" as P_Comunicação {
 
     ' Agrupando as extensões para apontarem na mesma direção
     UC_Historico .right.> UC_TrocarMensagens : <<extend>>
-    UC_ChatDireto .right.> UC_TrocarMensagens : <<extend>>
     UC_AbrirChamado .right.> UC_TrocarMensagens : <<extend>>
     UC_EncerrarChamado .right.> UC_TrocarMensagens : <<extend>>
+    UC_ChatDireto .right.> UC_AbrirChamado : <<extend>>
 }
 
 

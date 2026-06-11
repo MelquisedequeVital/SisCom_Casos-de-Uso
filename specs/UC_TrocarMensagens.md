@@ -1,7 +1,7 @@
 # Caso de Uso: UC_TrocarMensagens
 
 **Objetivo:** Permitir que o ator realize a troca de mensagens em tempo real ou de forma assíncrona, enviando textos e anexos após a abertura ou solicitação de um chamado.  
-**Requisitos:** RF003 (Módulo de Mensagem e Colaboração do SisCom)  
+**Requisitos:** RF2001  
 **Atores:** Usuário do Sistema (US)  
 **Condição de entrada:** O ator é solicitado para atendimento ou solicita interação após a abertura de um chamado, selecionando a opção 'Acessar chats' no dashboard.
 

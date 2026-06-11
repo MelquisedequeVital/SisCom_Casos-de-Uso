@@ -4,7 +4,7 @@
 
 **Requisitos:** [RF1003] - Visualização de Filas de Chamados; [RNF1007] - Departamento Responsável.
 
-**Atores:** Usuário Requerente, Gestor.
+**Atores:** Usuário Requerido, Gestor.
 
 **Condição de entrada:** O usuário deve estar autenticado e acessar a aba "Filas de Atendimento" no menu principal.
 

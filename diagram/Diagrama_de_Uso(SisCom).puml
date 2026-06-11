@@ -72,7 +72,7 @@ Gestor --- UC_ChatDireto
 Gestor --- UC_ManterReuniao
 Gestor --- UC_Relatorio
 Gestor --- UC_Historico_Departamento
-UC_ChatDireto .> UC_TrocarMensagens : <<include>>
+UC_ChatDireto .> UC_TrocarMensagens : <<extend>>
 UC_ManterReuniao <. UC_NotificaConvite: <<extend>>
 
 ' Administrador

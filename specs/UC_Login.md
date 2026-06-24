@@ -1,4 +1,4 @@
-# Caso de Uso: UCX - Login
+# Caso de Uso: UC01 - Login
 
 **Objetivo:** Permitir que o usuário acesse o sistema de forma segura utilizando e-mail institucional e senha.
 

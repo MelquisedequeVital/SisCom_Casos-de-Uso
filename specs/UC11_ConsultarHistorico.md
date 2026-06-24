@@ -1,8 +1,11 @@
-# Caso de Uso: UC_ConsultarHistorico
+# Caso de Uso: UC11_ConsultarHistorico
 
 **Objetivo:** Permitir que o ator consulte o histórico completo de chats anteriores e mensagens trocadas, inclusive em modo offline.  
+
 **Requisitos:** RF003 (Módulo de Mensagem e Colaboração) e RF2004 (Modo Offline)  
+
 **Atores:** Usuário do Sistema (US)  
+
 **Condição de entrada:** O ator está com uma conversa ativa aberta na página de mensagens (`UC_TrocarMensagens`).
 
 ---

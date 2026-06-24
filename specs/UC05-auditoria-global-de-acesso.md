@@ -1,8 +1,8 @@
-## [RF4004] - Auditoria Global de Acessos: Como administrador, eu gostaria de registrar e monitorar os logs de login e acessos de todos os usuários, para garantir a segurança da informação e rastrear ações indevidas, garantindo a privacidade conforme: [RNF1002] - Conformidade com a LGPD.
+# UC05 - Auditoria Global de Acessos
 
 **Caso de uso:** Monitoramento e Auditoria Global de Logs de Acesso  
 **Objetivo:** Permitir que o administrador registre, visualize e monitore os logs de login e ações dos usuários no sistema para garantir a segurança da informação e investigar atividades indevidas, respeitando as normas de privacidade.  
-**Requisitos:** [RNF1002]  
+**Requisitos:** [RNF1002] , [RF4004] - Auditoria Global de Acessos 
 **Atores:** Administrador  
 **Condição de entrada:** O ator faz login no sistema com credenciais administrativas e acessa o painel de segurança/auditoria global.  
 

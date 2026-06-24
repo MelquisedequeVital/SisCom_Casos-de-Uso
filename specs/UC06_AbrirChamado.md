@@ -1,8 +1,11 @@
-# Caso de Uso: UCX - Abrir Chamado
+# Caso de Uso: UC06 - Abrir Chamado
 
 **Objetivo:** Permitir que o usuário requerente formalize uma demanda de atendimento.
+
 **Requisitos:** [RF1001] - Abertura de Chamados;
+
 **Atores:** Usuário Requerente.
+
 **Condição de entrada:** O usuário seleciona a opção "Novo Chamado" no dashboard.
 
 ---

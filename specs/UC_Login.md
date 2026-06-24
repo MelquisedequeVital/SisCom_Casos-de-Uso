@@ -1,8 +1,11 @@
 # Caso de Uso: UCX - Login
 
 **Objetivo:** Permitir que o usuário acesse o sistema de forma segura utilizando e-mail institucional e senha.
+
 **Requisitos:** [RF001] - Autenticação de Usuário; [RNF4001] - Integração com API CEHAP; [RNF1003] - Criptografia de Dados em Repouso.
+
 **Atores:** Usuário do Sistema.
+
 **Condição de entrada:** O usuário acessa a página inicial do sistema.
 
 ---

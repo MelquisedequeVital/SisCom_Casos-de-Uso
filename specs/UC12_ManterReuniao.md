@@ -1,8 +1,11 @@
-# Caso de Uso: UC_ManterReuniao
+# Caso de Uso: UC12_ManterReuniao
 
 **Objetivo:** Permitir que o ator realize o agendamento, consulta, alteração e cancelamento de reuniões integradas ao calendário do sistema.  
+
 **Requisitos:** RF3001 e RF3002
+
 **Atores:** Gestor, Administrador (Usuários com permissão de agendamento conforme [NR001])  
+
 **Condição de entrada:** O ator seleciona a opção 'Calendário' ou 'Reuniões' no dashboard principal.
 
 ---

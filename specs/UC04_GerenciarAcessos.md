@@ -1,8 +1,11 @@
-# Caso de Uso: UCX - Gerenciar Acessos
+# Caso de Uso: UC04 - Gerenciar Acessos
 
 **Objetivo:** Permitir ao Administrador controlar as permissões e perfis de acesso dos usuários, garantindo que apenas usuários autorizados realizem operações específicas, de acordo com o modelo de privilégios da instituição.
+
 **Requisitos:** [RF004] - Gerenciamento de Acessos; [RNF1001] - Controle de Acesso Baseado em Papéis.
+
 **Atores:** Administrador.
+
 **Condição de entrada:** O Administrador deve estar autenticado e acessar o painel de "Configurações de Usuários" na interface administrativa.
 
 ---

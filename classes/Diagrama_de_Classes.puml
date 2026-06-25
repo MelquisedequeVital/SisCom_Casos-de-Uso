@@ -1,0 +1,93 @@
+@startuml
+
+class API_CEHAP{
+    - List<UsuarioDoSistema> usuariosDoSistema
+    - Boolean autenticarUsuario(UsuarioDoSistema usuario)
+    - Boolean verificaSenha(String senha)
+    - Boolean guardarSenha(String senha)
+}
+
+class UsuarioDoSistema{
+    -String emailInstitucional
+    -String senha
+    -Boolean senhaPendente
+
+}
+
+class Administrador extends UsuarioDoSistema{
+    + void bloquearUsuario(UsuarioDoSistema usuario)
+    + void redefinirSenha(UsuarioDoSistema usuario, String novaSenha)
+    + List<UsuarioDoSistema> buscarUsuarios()
+    
+}
+
+class Gestor extends UsuarioDoSistema{
+    -Setor setorGerido
+
+    +List<Chamado> buscarChamadosdoSetor()
+}
+
+class UsuarioRequerente extends UsuarioDoSistema{
+    +void abrirChamado(String descricao, String categoria)
+    +void atualizarStatusChamado(Chamado chamado, Status novoStatus)
+    +void encerrarChamado(Chamado chamado)
+}
+
+class UsuarioRequerido extends UsuarioDoSistema{
+    + List<Chamado> buscarChamados()
+    + List<Chamado> filtrarChamados(String campo, String valor)
+}
+
+class Setor {
+    -String nome
+    -List<UsuarioDoSistema> usuariosDoSetor
+}
+
+class Chamado{
+    -String motivo
+    -Urgencia urgencia
+    -String mensagemInicial
+    -Status status
+    -Setor setorDestino
+    -UsuarioRequerido usuarioRequerido
+    -UsuarioRequerente usuarioRequerente
+    -Chat chat
+    
+
+    +usuarioRequerido realizarTriagem()
+    -void notificarUsuarioRequerido()
+}
+
+enum Status{
+    ABERTO
+    EM_ANDAMENTO
+    FECHADO
+}
+
+enum Urgencia{
+    BAIXA
+    MEDIA
+    ALTA
+}
+
+class Chat {
+    -List<Mensagem> mensagens
+    -List<UsuarioDoSistema> participantes
+
+    +void enviarMensagem(Mensagem mensagem)
+    +void enviarAnexo(Anexo anexo)
+    +void exibirMensagens()
+}
+
+class Mensagem {
+    -String conteudo
+    -UsuarioDoSistema remetente
+    -Date dataEnvio
+}
+
+
+
+
+
+
+@enduml

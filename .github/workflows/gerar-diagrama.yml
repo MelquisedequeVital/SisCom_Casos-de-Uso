@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - main
-            - melqui
         paths:
             - "**/*.puml"
 
@@ -18,14 +17,15 @@ jobs:
 
             - name: Gerar PDF usando imagem oficial com suporte a PDF
               run: |
-                  docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "diagram/Diagrama_de_Uso(SisCom).puml"
-
+                  docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "useCases/diagram/Diagrama_de_Uso(SisCom).puml"
+                  docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "classes/Diagrama_de_Classes.puml"
             - name: Commitar e pushar o PDF de volta para o repositório
               run: |
                   git config --global user.name "github-actions[bot]"
                   git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-                  git add "diagram/Diagrama_de_Uso(SisCom).pdf"
+                  git add "useCases/diagram/Diagrama_de_Uso(SisCom).pdf"
+                  git add "classes/Diagrama_de_Classes.pdf"
 
                   git commit -m "Automação: PDF do PlantUML atualizado" || echo "Sem alterações no diagrama."
                   git push

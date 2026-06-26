@@ -6,6 +6,11 @@ skinparam visibilityCharCharSeparator " "
 ' DEFINIÇÕES DE CLASSES E ENUMS
 ' ==========================================
 
+interface API_CEHAP as "API_CEHAP" {
+}
+
+
+
 class UsuarioRepository{
     -apiUrl: String
 
@@ -89,6 +94,7 @@ enum Urgencia {
 
 ' Relação API com Usuarios
 UsuarioService --o UsuarioRepository : "consome"
+UsuarioRepository --o API_CEHAP : "consome"
 UsuarioService o.down. UsuarioDoSistema : "valida e manipula"
 
 ' Heranças 
@@ -105,7 +111,7 @@ Chamado *-- Status
 Chamado *-- Setor
 Chamado *-- Chat
 Chamado "0..*" --o "1" UsuarioDoSistema : criado por (requisitante) >
-Chamado "0..*" --o "0..1" UsuarioDoSistema : atribuído a (responsável) >
+Chamado "0..*" --o "1" UsuarioDoSistema : atribuído a (responsável) >
 
 ' Relacionamentos de Chat e Mensagem
 Chat *-- "0..*" Mensagem

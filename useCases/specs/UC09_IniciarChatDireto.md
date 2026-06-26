@@ -32,12 +32,10 @@
 ### Fluxos Alternativos
 
 #### A1 - Optar por Abrir Chamado Normal
-1. No passo 3 do Fluxo Principal, o Gestor opta por não usar o chat direto e decide abrir um chamado comum para um setor específico.
-2. O fluxo segue as regras e etapas descritas no caso de uso de abertura de chamados padrão (`UC_AbrirChamado`).
+1. No passo 3 do Fluxo Principal, o Gestor opta por não usar o chat direto e decide abrir um chamado comum para um setor específico. O fluxo segue as regras e etapas descritas no caso de uso de abertura de chamados padrão (`UC_AbrirChamado`).
 
 #### A2 - Cancelar a Operação
-1. No passo 6 do Fluxo Principal, o ator desiste de iniciar o chat direto e seleciona o botão 'Cancelar'.
-2. O sistema limpa os campos preenchidos e retorna o ator para o dashboard principal, sem criar nenhuma nova conversa ou registro.
+1. No passo 6 do Fluxo Principal, o ator desiste de iniciar o chat direto e seleciona o botão 'Cancelar'. O sistema limpa os campos preenchidos e retorna o ator para o dashboard principal, sem criar nenhuma nova conversa ou registro.
 
 ---
 
@@ -45,5 +43,4 @@
 
 #### E1 - Campos Obrigatórios Não Preenchidos
 1. No passo 6 do Fluxo Principal, o ator clica em 'Iniciar Chat' sem selecionar um gestor da lista ou sem digitar a mensagem inicial.
-2. O sistema identifica a ausência dos dados obrigatórios.
-3. O sistema impede o envio, destaca os campos não preenchidos em vermelho e exibe o alerta: *"Por favor, preencha todos os campos obrigatórios para iniciar o chat."*
+2. O sistema impede o envio, destaca os campos não preenchidos em vermelho e exibe o alerta: *"Por favor, preencha todos os campos obrigatórios para iniciar o chat."*

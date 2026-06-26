@@ -30,15 +30,12 @@
 ### Fluxos Alternativos
 
 #### A1 - Desistir do Encerramento
-1. No passo 3 do Fluxo Principal, o ator decide não fechar o chamado naquele momento e seleciona o botão 'Voltar para o Chat' ou clica no ícone de fechar (X) do modal.
-2. O sistema fecha o modal sem salvar nenhuma alteração.
-3. O chat continua ativo e aberto para troca de mensagens normalmente.
+1. O ator decide não fechar o chamado naquele momento e seleciona o botão 'Voltar para o Chat' ou clica no ícone de fechar (X) do modal. O sistema fecha o modal sem salvar nenhuma alteração.
 
 ---
 
 ### Fluxos de Exceção
 
 #### E1 - Feedback Obrigatório Ausente
-1. No passo 3 do Fluxo Principal, o ator tenta clicar em 'Confirmar Encerramento' sem selecionar se o chamado foi atendido ou sem marcar a nota de estrelas.
-2. O sistema identifica a ausência das marcações obrigatórias.
-3. O sistema impede a finalização, destaca as opções em vermelho e exibe o alerta: *"Por favor, preencha os campos de avaliação obrigatórios para encerrar o chamado."*
+1. O ator clica em 'Confirmar Encerramento' sem preencher os critérios mandatórios de nota ou atendimento.
+2. O sistema bloqueia a finalização, destaca os campos em vermelho e emite o alerta: "Por favor, preencha os campos de avaliação obrigatórios para encerrar o chamado."

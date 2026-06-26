@@ -1,93 +1,97 @@
 @startuml
 
-class API_CEHAP{
-    - List<UsuarioDoSistema> usuariosDoSistema
-    - Boolean autenticarUsuario(UsuarioDoSistema usuario)
-    - Boolean verificaSenha(String senha)
-    - Boolean guardarSenha(String senha)
+class API_CEHAP {
+    - usuariosDoSistema: List<UsuarioDoSistema>
+    - autenticarUsuario(usuario: UsuarioDoSistema): Boolean
+    - verificaSenha(senha: String): Boolean
+    - guardarSenha(senha: String): Boolean
 }
 
-class UsuarioDoSistema{
-    -String emailInstitucional
-    -String senha
-    -Boolean senhaPendente
-
+class UsuarioDoSistema {
+    - emailInstitucional: String
+    - senha: String
+    - senhaPendente: Boolean
 }
 
-class Administrador extends UsuarioDoSistema{
-    + void bloquearUsuario(UsuarioDoSistema usuario)
-    + void redefinirSenha(UsuarioDoSistema usuario, String novaSenha)
-    + List<UsuarioDoSistema> buscarUsuarios()
-    
+interface Requerente {
+    + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
+    + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
+    + encerrarChamado(chamado: Chamado): void
 }
 
-class Gestor extends UsuarioDoSistema{
-    -Setor setorGerido
-
-    +List<Chamado> buscarChamadosdoSetor()
+interface Requerido {
+    + buscarChamados(): List<Chamado>
+    + filtrarChamados(campo: String, valor: String): List<Chamado>
 }
 
-class UsuarioRequerente extends UsuarioDoSistema{
-    +void abrirChamado(String descricao, String categoria)
-    +void atualizarStatusChamado(Chamado chamado, Status novoStatus)
-    +void encerrarChamado(Chamado chamado)
+class ComportamentoRequerente implements Requerente {
+    + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
+    + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
+    + encerrarChamado(chamado: Chamado): void
 }
 
-class UsuarioRequerido extends UsuarioDoSistema{
-    + List<Chamado> buscarChamados()
-    + List<Chamado> filtrarChamados(String campo, String valor)
+class ComportamentoRequerido implements Requerido {
+    + buscarChamados(): List<Chamado>
+    + filtrarChamados(campo: String, valor: String): List<Chamado>
+}
+
+class Administrador extends UsuarioDoSistema implements Requerente, Requerido {
+    - comportamentoRequerente: Requerente {readonly}
+    - comportamentoRequerido: Requerido {readonly}
+    + bloquearUsuario(usuario: UsuarioDoSistema): void
+    + redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
+    + buscarUsuarios(): List<UsuarioDoSistema>
+}
+
+class Gestor extends UsuarioDoSistema implements Requerente, Requerido {
+    - comportamentoRequerente: Requerente {readonly}
+    - comportamentoRequerido: Requerido {readonly}
+    - setorGerido: Setor
+    + buscarChamadosdoSetor(): List<Chamado>
 }
 
 class Setor {
-    -String nome
-    -List<UsuarioDoSistema> usuariosDoSetor
+    - nome: String
+    - usuariosDoSetor: List<UsuarioDoSistema>
 }
 
-class Chamado{
-    -String motivo
-    -Urgencia urgencia
-    -String mensagemInicial
-    -Status status
-    -Setor setorDestino
-    -UsuarioRequerido usuarioRequerido
-    -UsuarioRequerente usuarioRequerente
-    -Chat chat
-    
-
-    +usuarioRequerido realizarTriagem()
-    -void notificarUsuarioRequerido()
+class Chamado {
+    - motivo: String
+    - urgencia: Urgencia
+    - mensagemInicial: String
+    - status: Status
+    - setorDestino: Setor
+    - usuarioRequerido: UsuarioRequerido
+    - usuarioRequerente: UsuarioRequerente
+    - chat: Chat
+    + realizarTriagem(): UsuarioRequerido
+    - notificarUsuarioRequerido(): void
 }
 
-enum Status{
+enum Status {
     ABERTO
     EM_ANDAMENTO
     FECHADO
 }
 
-enum Urgencia{
+enum Urgencia {
     BAIXA
     MEDIA
     ALTA
 }
 
 class Chat {
-    -List<Mensagem> mensagens
-    -List<UsuarioDoSistema> participantes
-
-    +void enviarMensagem(Mensagem mensagem)
-    +void enviarAnexo(Anexo anexo)
-    +void exibirMensagens()
+    - mensagens: List<Mensagem>
+    - participantes: List<UsuarioDoSistema>
+    + enviarMensagem(mensagem: Mensagem): void
+    + enviarAnexo(anexo: Anexo): void
+    + exibirMensagens(): void
 }
 
 class Mensagem {
-    -String conteudo
-    -UsuarioDoSistema remetente
-    -Date dataEnvio
+    - conteudo: String
+    - remetente: UsuarioDoSistema
+    - dataEnvio: Date
 }
-
-
-
-
-
 
 @enduml

@@ -1,0 +1,49 @@
+@startuml
+title Diagrama de Atividade - Método encerrarChamado()
+
+start
+
+:Usuário solicita encerramento do Chamado;
+
+partition "Atualização do Status" {
+  :Chamar atualizarStatusChamado(chamado, FECHADO) em UsuarioDoSistema;
+  note right
+    Internamente, este método:
+    1. Altera o StatusChamado para FECHADO.
+    2. Define a dataHoraFechamento atual.
+  end note
+}
+
+partition "Coleta de Feedback (Opcional)" {
+  :Solicitar avaliação do usuário requerente;
+  if (Usuário preencheu avaliação?) then (sim)
+    :Chamar registrarAvaliacao(estrelas, feedback) no Chamado;
+    :Salvar avaliação nos atributos internos;
+  else (não)
+    :Ignorar avaliação;
+  endif
+}
+
+partition "Persistência e Desvinculação" {
+  :UsuarioService atualiza o registro do Chamado no BD;
+  note right
+    O chamado NÃO é excluído.
+    Ele permanece salvo no BD_CEHAP
+    para fins de consulta futura.
+  end note
+  
+  :Remover Chamado da lista ativa de chamados visualizados pelo Usuário;
+}
+
+partition "Auditoria do Sistema" {
+  :Chamar gerarLogAuditoria(usuario, ENCERRAR_CHAMADO) no UsuarioService;
+  note right
+    O Service cria o objeto LogAuditoria
+    e o persiste no banco de dados.
+  end note
+}
+
+:Exibir mensagem de "Chamado Encerrado com Sucesso";
+
+stop
+@enduml

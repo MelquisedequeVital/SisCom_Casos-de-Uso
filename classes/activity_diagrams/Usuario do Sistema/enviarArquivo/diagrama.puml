@@ -1,0 +1,49 @@
+@startuml
+title Diagrama de Atividade - Método enviarArquivo()
+
+start
+
+:Usuário seleciona um arquivo e clica em enviar;
+:Instanciar objeto Anexo;
+note right
+  Preenche idAnexo, nomeArquivo, 
+  tamanhoMB e extensao com os dados do arquivo.
+end note
+
+:Chamar validarTamanhoEPermissao() no Anexo;
+
+if (Arquivo é válido?) then (sim)
+  
+  if (Dispositivo está online?) then (sim)
+    
+    partition "Upload do Arquivo" {
+      :UsuarioService envia o arquivo para a API_CEHAP;
+      :API_CEHAP faz o upload para o servidor de arquivos/cloud;
+      :API_CEHAP retorna a urlArmazenamento gerada;
+      :Define o atributo urlArmazenamento no objeto Anexo;
+    }
+    
+    partition "Vinculação ao Chat" {
+      :Instanciar objeto Mensagem (tipo correspondente a arquivo);
+      :Vincular o Anexo à Mensagem;
+      :Chamar enviarMensagem(mensagem) no Chat;
+      :API_CEHAP persiste o registro da mensagem e anexo no BD_CEHAP;
+    }
+    
+    :Exibe o arquivo enviado com sucesso no Chat;
+    :Gerar LogAuditoria (AcaoSistema = ENVIAR_ANEXO) [via Service];
+
+  else (não)
+    :Exibe mensagem "Não é possível enviar arquivos estando offline";
+    note right
+      Arquivos pesados geralmente não vão para o 
+      cacheOffline por limitações de armazenamento local.
+    end note
+  endif
+
+else (não)
+  :Exibe alerta de erro (Ex: "Arquivo muito grande ou extensão não permitida");
+endif
+
+stop
+@enduml

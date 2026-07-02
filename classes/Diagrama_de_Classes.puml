@@ -112,6 +112,8 @@ class Chamado {
     -dataHoraAbertura: DateTime
     -dataHoraFechamento: DateTime
     +realizarTriagem(): UsuarioDoSistema
+    -aplicarRoundRobin(): void
+    
     -notificarUsuarioRequerido(): void
 }
 

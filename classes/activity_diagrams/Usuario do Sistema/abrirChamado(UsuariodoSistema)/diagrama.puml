@@ -1,10 +1,11 @@
 @startuml
+title Diagrama de Atividade - Abrir Chamado (Fluxo Completo)
 
 start
 
-:instanciar Chamado;
+:Instanciar Chamado;
 :Preencher dados do Chamado: motivo, mensagem inicial, urgência, setor destino;
-:Chamado valida dados foram preenchidos corretamente;
+:Chamado valida se dados foram preenchidos corretamente;
 
 if (dados válidos?) then (sim)
   :Instanciar UsuarioService;
@@ -13,7 +14,16 @@ if (dados válidos?) then (sim)
   
   if (dados válidos no Service?) then (sim)
     :UsuarioService persiste chamado no banco de dados;
-    :UsuarioService retorna sucesso para o usuário;
+    
+    partition "Processamento Interno do Chamado" {
+      :Chamar realizarTriagem() no Chamado;
+      note right
+        Encontra o atendente, instancia o Chat
+        e vincula os participantes.
+      end note
+    }
+    
+    :UsuarioService retorna sucesso para o usuário com Chat iniciado;
   else (não)
     :UsuarioService retorna erro para o usuário;
   endif
@@ -23,5 +33,4 @@ else (não)
 endif
 
 stop
-
 @enduml

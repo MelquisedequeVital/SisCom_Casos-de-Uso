@@ -44,6 +44,8 @@ class Setor {
     -nome: String
     -codigo: String
     -cargaAtualAtendimentos: int
+
+    +obterAtendentesOrdenadosPorCarga(): List<UsuarioDoSistema>
 }
 
 class UsuarioDoSistema {
@@ -52,6 +54,8 @@ class UsuarioDoSistema {
     - senha: String
     - senhaPendente: Boolean
     - chamados: List<Chamado>
+
+
     + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
     + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
     + encerrarChamado(chamado: Chamado): void
@@ -158,7 +162,6 @@ class Chamado {
     + vincularChamadoAtendente(atendente: UsuarioDoSistema): void
     + notificarAtendente(): void
     + atualizarListaFila(): void
-    -aplicarRoundRobin(): void
     -notificarUsuarioRequerido(): void
 }
 

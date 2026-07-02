@@ -1,0 +1,29 @@
+@startuml
+title Diagrama de Atividade - Método realizarTriagem() no Chamado
+
+start
+
+:Recebe Setor de Destino do Chamado;
+:Chama obterAtendentesOrdenadosPorCarga() do Setor;
+
+if (Existe mais de um atendente com a mesma menor carga?) then (sim)
+  :Seleciona o primeiro atendente da lista (critério de desempate);
+else (não)
+  :Seleciona o atendente com a menor carga de chamados;
+endif
+
+:Define o atendente selecionado como o "Requerido" do Chamado;
+:Chama vincularChamadoAtendente(atendente);
+
+partition "Inicialização do Chat" {
+  :Instancia novo Chat para o Chamado;
+  :Vincula o Usuário Requerente ao Chat;
+  :Vincula o Atendente Requerido ao Chat;
+  :Preenche metadados do Chat (tipoChat, statusSincronizacao);
+}
+
+:Chama notificarAtendente() [Chamado];
+:Chama atualizarListaFila() [Chamado];
+
+stop
+@enduml

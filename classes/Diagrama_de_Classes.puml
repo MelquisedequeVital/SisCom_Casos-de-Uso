@@ -1,65 +1,79 @@
 @startuml
+skinparam classAttributeIconSize 0
+skinparam visibilityCharCharSeparator " "
 
 ' ==========================================
 ' DEFINIÇÕES DE CLASSES E ENUMS
 ' ==========================================
 
-class API_CEHAP {
-    - autenticarUsuario(usuario: UsuarioDoSistema): Boolean
+interface API_CEHAP as "API_CEHAP" {
 }
 
-abstract class UsuarioDoSistema {
-    - emailInstitucional: String
-    - senha: String
-    - senhaPendente: Boolean
-    - verificaSenha(senha: String): Boolean
+
+
+class UsuarioRepository{
+    -apiUrl: String
+
+    +buscarUsuarios(): List<UsuariosDoSistema>
+    +buscarUsuariosporId(usuarioID: String): UsuarioDoSistema
+    +salvarSenha(usuarioID: String): void
+
+}
+
+class UsuarioService{
+    + obterEVerificarUsuario(cpf: String): UsuarioBD
+}
+
+class UsuarioDoSistema {
+    -id: UUID
+    -emailInstitucional: String
+    -senha: String
+    -senhaPendente: Boolean
     
     ' Métodos gerais de fluxo de chamados
-    + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
-    + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
-    + encerrarChamado(chamado: Chamado): void
-    + buscarChamados(): List<Chamado>
-    + filtrarChamados(campo: String, valor: String): List<Chamado>
+    +abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
+    +atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
+    +encerrarChamado(chamado: Chamado): void
+    +buscarChamados(): List<Chamado>
+    +filtrarChamados(campo: String, valor: String): List<Chamado>
 }
 
-class UsuarioComum {
-    ' Herda todos os métodos de UsuarioDoSistema.
-}
+
 
 class Administrador {
     ' Responsabilidades exclusivas de administração
-    + bloquearUsuario(usuario: UsuarioDoSistema): void
-    + redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
-    + buscarUsuarios(): List<UsuarioDoSistema>
+    +bloquearUsuario(usuario: UsuarioDoSistema): void
+    +redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
+    +buscarUsuarios(): List<UsuarioDoSistema>
 }
 
 class Gestor {
     ' Responsabilidades exclusivas de gestão de setor
-    + buscarChamadosdoSetor(): List<Chamado>
+    +buscarChamadosdoSetor(): List<Chamado>
 }
 
 class Setor {
-    - nome: String
+    -nome: String
 }
 
 class Chamado {
-    - motivo: String
-    - mensagemInicial: String
-    + realizarTriagem(): UsuarioDoSistema
-    - notificarUsuarioRequerido(): void
+    -motivo: String
+    -mensagemInicial: String
+    +realizarTriagem(): UsuarioDoSistema
+    -notificarUsuarioRequerido(): void
 }
 
 class Chat {
-    - participantes: List<UsuarioDoSistema>
-    + enviarMensagem(mensagem: Mensagem): void
-    + enviarAnexo(anexo: Anexo): void
-    + exibirMensagens(): void
+    -participantes: List<UsuarioDoSistema>
+    +enviarMensagem(mensagem: Mensagem): void
+    +enviarAnexo(anexo: Anexo): void
+    +exibirMensagens(): void
 }
 
 class Mensagem {
-    - conteudo: String
-    - remetente: UsuarioDoSistema
-    - dataEnvio: Date
+    -conteudo: String
+    -remetente: UsuarioDoSistema
+    -dataEnvio: Date
 }
 
 enum Status {
@@ -79,13 +93,13 @@ enum Urgencia {
 ' ==========================================
 
 ' Relação API com Usuarios
-API_CEHAP "1" --> "0..*" UsuarioDoSistema : gerencia >
+UsuarioService --o UsuarioRepository : "consome"
+UsuarioRepository --o API_CEHAP : "consome"
+UsuarioService o.down. UsuarioDoSistema : "valida e manipula"
 
-' Heranças (Setas invertidas/direcionadas para forçar UsuarioDoSistema no topo)
-UsuarioDoSistema <|-- UsuarioComum
+' Heranças 
 UsuarioDoSistema <|-- Administrador
 UsuarioDoSistema <|-- Gestor
-
 
 ' Relacionamentos de Setor e Usuários
 Gestor "1" o-- "1..*" Setor 
@@ -96,8 +110,8 @@ Chamado *-- Urgencia
 Chamado *-- Status
 Chamado *-- Setor
 Chamado *-- Chat
-Chamado "0..*" --> "1" UsuarioDoSistema : criado por (requisitante) >
-Chamado "0..*" --> "0..1" UsuarioDoSistema : atribuído a (responsável) >
+Chamado "0..*" --o "1" UsuarioDoSistema : criado por (requisitante) >
+Chamado "0..*" --o "1" UsuarioDoSistema : atribuído a (responsável) >
 
 ' Relacionamentos de Chat e Mensagem
 Chat *-- "0..*" Mensagem

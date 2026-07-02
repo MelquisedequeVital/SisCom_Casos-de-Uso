@@ -15,9 +15,10 @@
 1. O ator visualiza a tela da conversa ativa à direita e seleciona o ícone de três pontinhos (menu de opções) localizado no topo superior da conversa.
 2. O sistema exibe um menu flutuante com opções adicionais. O ator observa que existe a opção:
    * Consultar Histórico
-3. O ator seleciona a opção 'Consultar Histórico'. **[A1]**
-4. O sistema processa a requisição, busca os registros no banco de dados e atualiza a tela exibindo uma linha do tempo estática com todas as mensagens, carimbos de data/hora e anexos passados daquele chat/chamado.
-5. O ator verifica as informações desejadas no histórico da conversação.
+    e então, clica nela.
+3. O sistema processa a requisição, busca os registros de forma cronológica no banco de dados.
+4. O sistema atualiza a tela e o ator observa que a linha do tempo ativa foi substituída por uma 'Visualização de Histórico Estático', contendo todas as mensagens antigas, balões cinzas, carimbos de data/hora e links de anexos passados daquele chat.
+5. O ator desliza a página e verifica as informações desejadas no histórico da conversação.
 
 ---
 
@@ -25,6 +26,10 @@
 
 #### A1 - Visualizar Histórico Offline
 1. No passo 3 do Fluxo Principal, o ator seleciona 'Consultar Histórico', porém o sistema detecta que o dispositivo está sem conexão com a internet.
-2. O sistema ativa o modo offline por meio da arquitetura PWA `[RNF005]`.
-3. O sistema busca os dados armazenados localmente no cache do dispositivo `[RNF002]`.
-4. O sistema renderiza o histórico disponível localmente e exibe um informativo visual na tela com o texto: *"Modo Offline - Exibindo histórico local"*.
+2. O sistema ativa o modo offline por meio da arquitetura PWA `[RNF005]` e busca os dados armazenados localmente no cache do dispositivo `[RNF002]`.
+3. O sistema renderiza a listagem local e exibe um banner informativo fixado na cor amarela com o texto: "Modo Offline - Exibindo histórico local".
+
+### Fluxos de Exceção
+
+####FE01 - Histórico Inexistente
+1. No passo 3, caso o chat seja novo e não possua interações prévias arquivadas, o sistema mantém a tela limpa e insere uma mensagem centralizada: "Não há mensagens anteriores registradas para este chat."

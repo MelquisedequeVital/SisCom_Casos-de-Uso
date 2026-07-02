@@ -34,27 +34,17 @@
 ### Fluxos Alternativos
 
 #### A1 - Visualizar e Editar Reunião
-1. No passo 2 do Fluxo Principal, o ator em vez de criar uma nova reunião, seleciona uma reunião existente diretamente no painel do Calendário.
-2. O sistema abre a tela com os detalhes da reunião e os campos preenchidos.
-3. O ator altera as informações necessárias (como horário ou participantes) e clica em 'Salvar Alterações'.
-4. O sistema atualiza o evento e dispara uma notificação de atualização para os convidados.
+1. No passo 2 do Fluxo Principal, o ator em vez de criar uma nova reunião, seleciona uma reunião existente diretamente no painel do Calendário. O sistema abre a tela com os detalhes preenchidos. O sistema abre a tela com os detalhes preenchidos. O ator altera as caixas de horários ou pauta e seleciona o botão 'Salvar Alterações'.
 
 #### A2 - Cancelar Reunião Existente
-1. O ator executa o passo 1 do fluxo **[A1]**.
-2. O ator seleciona a opção 'Excluir Reunião' ou 'Cancelar Reunião'.
-3. O sistema solicita uma confirmação da exclusão.
-4. O ator confirma. O sistema remove o evento do calendário e notifica os participantes sobre o cancelamento.
+1. O ator abre o bloco de uma reunião agendada e clica no botão vermelho 'Excluir Reunião'. O sistema exibe um modal de confirmação , o ator confirma e o sistema remove o registro e dispara alertas de cancelamento.
 
 #### A3 - Visão Global e Gerenciamento de Salas (Exclusivo Administrador)
-1. O ator Administrador acessa a página de reuniões.
-2. O sistema identifica o perfil de Administrador e libera o painel de "Agendamentos Globais e Salas".
-3. O Administrador consegue visualizar, alterar ou cancelar reuniões de qualquer setor ou usuário do sistema, além de alocar salas globais.
-4. O fluxo de edição ou cancelamento segue as mesmas etapas dos fluxos **[A1]** e **[A2]**.
+1. O Administrador acessa a página e o sistema libera o painel adicional "Agendamentos Globais e Salas". O administrador visualiza e gerencia reuniões de qualquer usuário da plataforma.
 ---
 
 ### Fluxos de Exceção
 
 #### E1 - Campos Obrigatórios Ausentes
-1. No passo 4 do Fluxo Principal, o ator tenta agendar a reunião deixando o Título, Data ou Horário em branco.
-2. O sistema identifica a ausência dos dados obrigatórios.
-3. O sistema impede o salvamento, destaca os campos inválidos e exibe o alerta: *"Por favor, preencha os campos obrigatórios (Título, Data e Horários) para prosseguir."*
+1. O ator clica em agendar deixando caixas textuais ou temporais vazias.
+3. O sistema bloqueia a criação e emite um pop-up de aviso: "Por favor, preencha os campos obrigatórios (Título, Data e Horários) para prosseguir."

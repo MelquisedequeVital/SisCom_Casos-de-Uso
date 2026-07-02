@@ -61,8 +61,6 @@ class UsuarioDoSistema {
     + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
     + encerrarChamado(chamado: Chamado): void
     + filtrarChamados(campo: String, valor: String): List<Chamado>
-    + enviarMensagem(mensagem: Mensagem): void
-    + enviarArquivo(anexo: String): void
 }
 
 class Administrador {
@@ -138,7 +136,6 @@ class Chat {
     + enviarAnexo(anexo: Anexo): void
     + exibirMensagens(): void
     + salvarCacheOffline(mensagem: Mensagem): void
-    + verificarInformacoesValidas(): Boolean
     + validarCampos(): Boolean
     + sincronizarDadosServidor(): void
     + enviarNotificacaoPush(): void

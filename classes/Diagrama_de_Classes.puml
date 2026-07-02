@@ -6,14 +6,13 @@
 
 class API_CEHAP {
     - autenticarUsuario(usuario: UsuarioDoSistema): Boolean
-    - verificaSenha(senha: String): Boolean
-    - guardarSenha(senha: String): Boolean
 }
 
 abstract class UsuarioDoSistema {
     - emailInstitucional: String
     - senha: String
     - senhaPendente: Boolean
+    - verificaSenha(senha: String): Boolean
     
     ' Métodos gerais de fluxo de chamados
     + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void

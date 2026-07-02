@@ -1,0 +1,33 @@
+@startuml
+title Diagrama de Atividade - Validar Credenciais
+
+|Interface API_CEHAP|
+start
+:Receber e-mail e senha informados;
+
+|Banco de Dados (CEHAP)|
+:Buscar usuário por e-mail na base de dados;
+
+|Interface API_CEHAP|
+if (Usuário foi localizado?) then (Não)
+  :Exibir mensagem de credenciais inválidas;
+  :Retornar Falso;
+else (Sim)
+  :Comparar senha enviada com a senha armazenada;
+  if (As credenciais são compatíveis?) then (Não)
+    :Exibir mensagem de credenciais inválidas;
+    :Retornar Falso;
+  else (Sim)
+    :Verificar se a conta do usuário está ativa;
+    if (Status do usuário é Ativo?) then (Não)
+      :Exibir mensagem de conta inativa;
+      :Retornar Falso;
+    else (Sim)
+      :Retornar Verdadeiro;
+    endif
+  endif
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

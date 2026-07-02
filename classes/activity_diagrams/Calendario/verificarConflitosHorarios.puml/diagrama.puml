@@ -1,0 +1,29 @@
+@startuml
+title Diagrama de Atividade - Verificar Conflitos de Horários
+
+|Calendario|
+start
+:Receber dados da nova reunião (Sala, Data, Hora Início, Hora Fim);
+:Recuperar lista de participantes convidados;
+
+|Banco de Dados (CEHAP)|
+:Buscar agendamentos existentes para a mesma Sala e Data;
+:Buscar agenda dos participantes para a mesma Data;
+
+|Calendario|
+if (Existe alguma reunião na mesma sala que sobreponha o horário?) then (Sim)
+  :Exibir mensagem "A sala já está reservada neste horário";
+  :Retornar Verdadeiro;
+else (Não)
+  if (Algum participante já tem reunião agendada neste período?) then (Sim)
+    :Exibir mensagem "Há participantes com conflito de agenda";
+    :Retornar Verdadeiro;
+  else (Não)
+    :Aprovar horário do agendamento;
+    :Retornar Falso;
+  endif
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

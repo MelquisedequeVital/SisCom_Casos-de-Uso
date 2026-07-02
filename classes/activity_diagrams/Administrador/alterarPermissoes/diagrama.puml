@@ -1,0 +1,23 @@
+@startuml
+title Diagrama de Atividade - Alterar Permissões
+
+|Administrador|
+start
+:Selecionar usuário para edição;
+:Alterar marcações de perfis de acesso;
+:Salvar alterações de permissões;
+
+|Sistema|
+:Validar consistência dos novos perfis;
+if (Configuração de perfis é inválida?) then (Sim)
+  :Exibir mensagem de combinação incompatível;
+else (Sim)
+  :Atualizar privilégios de acesso no banco de dados;
+  :Forçar renovação da sessão do usuário afetado;
+  :Registrar log de auditoria de alteração de nível;
+  :Exibir mensagem de sucesso;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

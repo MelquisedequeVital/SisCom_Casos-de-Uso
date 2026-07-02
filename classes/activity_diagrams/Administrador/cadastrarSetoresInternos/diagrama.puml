@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Atividade - Cadastrar Setores Internos
+
+|Administrador|
+start
+:Preencher nome e sigla do novo setor;
+:Vincular responsável do setor;
+:Acionar comando de salvamento;
+
+|Sistema|
+if (Campos obrigatórios estão vazios?) then (Sim)
+  :Exibir mensagem de campos obrigatórios;
+else (Não)
+  :Consultar existência da sigla informada;
+  if (Sigla já está cadastrada?) then (Sim)
+    :Exibir mensagem de setor já existente;
+  else (Não)
+    :Gravar dados do novo setor no banco;
+    :Atualizar lista global de setores do sistema;
+    :Registrar log de auditoria de criação de setor;
+    :Exibir mensagem de cadastro concluído;
+  endif
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

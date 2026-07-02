@@ -1,0 +1,28 @@
+@startuml
+title Diagrama de Atividade - Filtrar Logs de Auditoria
+
+|Administrador|
+start
+:Selecionar campo de filtro;
+:Digitar valor do filtro de auditoria;
+:Acionar comando de filtragem;
+
+|Sistema|
+if (Valor do filtro está vazio?) then (Sim)
+  :Exibir mensagem de campo obrigatório;
+else (Não)
+  :Montar consulta dinâmica com os parâmetros;
+  :Executar busca na tabela de logs;
+  if (Algum registro corresponde ao critério?) then (Não)
+    :Exibir mensagem de nenhum log encontrado;
+  else (Sim)
+    :Recuperar lista de logs filtrados;
+    :Ordenar logs por data decrescente;
+    :Limpar visualização antiga da tabela;
+    :Renderizar lista de logs na tela;
+  endif
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

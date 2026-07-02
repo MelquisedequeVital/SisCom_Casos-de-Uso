@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Atividade - Buscar Usuário por Nome ou Matrícula
+
+|Administrador|
+start
+:Digitar termo de busca na barra de pesquisa;
+
+|Sistema|
+if (Termo inserido contém apenas números?) then (Sim)
+  :Definir consulta por campo Matrícula;
+else (Não)
+  :Definir consulta por campo Nome;
+endif
+
+:Executar busca parametrizada no banco de dados;
+
+if (Usuário foi localizado?) then (Não)
+  :Exibir mensagem de usuário não encontrado;
+else (Sim)
+  :Recuperar registros correspondentes;
+  :Aplicar paginação de resultados;
+  :Renderizar usuários filtrados na tela;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

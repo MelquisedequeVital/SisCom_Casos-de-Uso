@@ -1,0 +1,26 @@
+@startuml
+title Diagrama de Atividade - Registrar Log de Acesso
+
+|LogAuditoria|
+start
+:Capturar dados da sessão atual (IP, Data/Hora, ID do Usuário);
+:Definir o tipo de ação como "Acesso ao Sistema";
+
+|Banco de Dados (CEHAP)|
+:Abrir conexão com a tabela de auditoria;
+:Inserir novo registro com os dados capturados;
+
+|LogAuditoria|
+if (Ocorreu falha na gravação do Log?) then (Sim)
+  :Disparar alerta crítico no console do servidor;
+  note right
+    Se o log falhar, o sistema avisa os administradores
+    internamente para evitar brechas de segurança.
+  end note
+else (Não)
+  :Confirmar persistência do rastro de segurança;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

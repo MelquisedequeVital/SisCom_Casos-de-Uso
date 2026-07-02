@@ -1,0 +1,22 @@
+@startuml
+title Diagrama de Atividade - Salvar Senha
+
+|Interface API_CEHAP|
+start
+:Receber e-mail do usuário e a nova senha;
+:Processar segurança da nova credencial;
+
+|Banco de Dados (CEHAP)|
+:Localizar registro do usuário pelo e-mail;
+:Atualizar o campo de senha na base de dados;
+
+|Interface API_CEHAP|
+if (Persistência no banco foi bem-sucedida?) then (Não)
+  :Exibir mensagem de erro de comunicação;
+else (Sim)
+  :Registrar log interno de alteração de credencial;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

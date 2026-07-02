@@ -1,0 +1,23 @@
+@startuml
+title Diagrama de Atividade - Atualizar Registro do Usuário
+
+|Interface API_CEHAP|
+start
+:Receber o objeto com os dados do usuário;
+:Validar consistência das informações recebidas;
+
+|Banco de Dados (CEHAP)|
+:Mapear atributos alterados na tabela;
+:Executar comando de atualização no registro correspondente;
+
+|Interface API_CEHAP|
+if (Banco de dados confirmou a alteração?) then (Não)
+  :Exibir erro de falha na atualização cadastral;
+else (Sim)
+  :Atualizar cache de dados do sistema;
+  :Registrar log de alteração de dados;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

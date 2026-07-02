@@ -1,0 +1,28 @@
+@startuml
+title Diagrama de Atividade - Lógica de Registro de Avaliação
+
+start
+
+:Recebe a nota em estrelas e o comentário digitados pelo usuário;
+
+partition "Validação da Nota" {
+  if (A nota está entre 1 e 5 estrelas?) then (sim)
+    :Ajusta a nota do chamado com o valor recebido;
+  else (não)
+    :Aplica uma nota padrão ou limita o valor entre os extremos permitidos;
+  endif
+}
+
+partition "Gravação do Feedback" {
+  if (O usuário escreveu um texto de comentário?) then (sim)
+    :Grava o texto no campo de feedback do chamado;
+  else (não)
+    :Grava o campo de texto como "Sem comentários adicionais";
+  endif
+}
+
+:Associa a data e a hora em que a avaliação foi realizada;
+:Confirma que o chamado foi avaliado e salva as alterações de forma definitiva;
+
+stop
+@enduml

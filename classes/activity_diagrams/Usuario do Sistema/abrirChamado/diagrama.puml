@@ -1,0 +1,41 @@
+@startuml
+title Diagrama de Atividade - Lógica de Abertura de Chamado
+
+start
+
+:Usuário preenche os dados básicos do chamado;
+note right
+  Informa o motivo, mensagem inicial,
+  urgência e o setor de destino.
+end note
+
+:Valida se as informações obrigatórias foram preenchidas;
+
+if (Dados do preenchimento são válidos?) then (sim)
+  :O sistema verifica as regras de negócio do chamado;
+  
+  if (O chamado atende aos requisitos do sistema?) then (sim)
+    :Grava o novo chamado de forma definitiva no banco de dados;
+    
+    partition "Distribuição Automática (Triagem)" {
+      :Identifica o atendente disponível com menor carga no setor de destino;
+      :Vincula o atendente escolhido ao chamado;
+      :Instancia a nova sala de chat do atendimento;
+      :Conecta o usuário que abriu o chamado e o atendente ao chat;
+    }
+    
+    partition "Comunicação com a Equipe" {
+      :Envia uma notificação para o atendente que acabou de receber o chamado;
+    }
+    
+    :Confirma o sucesso da operação para o usuário com o chat pronto para uso;
+  else (não)
+    :Informa ao usuário o erro de validação do sistema;
+  endif
+
+else (não)
+  :Informa ao usuário que há campos obrigatórios inválidos;
+endif
+
+stop
+@enduml

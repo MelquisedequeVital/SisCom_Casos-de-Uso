@@ -1,29 +1,28 @@
 @startuml
-title Diagrama de Atividade - Método realizarTriagem() no Chamado
+title Diagrama de Atividade - Lógica de Triagem e Vínculo de Atendimento
 
 start
 
-:Recebe Setor de Destino do Chamado;
-:Chama obterAtendentesOrdenadosPorCarga() do Setor;
+:Recebe o setor de destino indicado no chamado;
+:Consulta a lista de atendentes daquele setor e suas respectivas cargas de trabalho;
 
-if (Existe mais de um atendente com a mesma menor carga?) then (sim)
-  :Seleciona o primeiro atendente da lista (critério de desempate);
+if (Existe mais de um atendente empatado com a mesma menor carga?) then (sim)
+  :Seleciona o primeiro atendente retornado pela lista como critério de desempate;
 else (não)
-  :Seleciona o atendente com a menor carga de chamados;
+  :Seleciona o atendente que estiver com a menor quantidade de chamados em andamento;
 endif
 
-:Define o atendente selecionado como o "Requerido" do Chamado;
-:Chama vincularChamadoAtendente(atendente);
+:Define o atendente selecionado como o responsável pelo chamado;
 
-partition "Inicialização do Chat" {
-  :Instancia novo Chat para o Chamado;
-  :Vincula o Usuário Requerente ao Chat;
-  :Vincula o Atendente Requerido ao Chat;
-  :Preenche metadados do Chat (tipoChat, statusSincronizacao);
+partition "Configuração da Comunicação" {
+  :Cria a nova sala de chat dedicada a este chamado;
+  :Associa o usuário que abriu o chamado (requerente) à sala de chat;
+  :Associa o atendente selecionado à sala de chat;
+  :Define as configurações iniciais e propriedades do chat;
 }
 
-:Chama notificarAtendente() [Chamado];
-:Chama atualizarListaFila() [Chamado];
+:Envia um alerta para o atendente avisando sobre o novo chamado;
+:Atualiza o painel visual e a fila de espera do setor;
 
 stop
 @enduml

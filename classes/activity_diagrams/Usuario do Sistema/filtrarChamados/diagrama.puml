@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Atividade - Lógica de Filtragem de Chamados
+
+start
+
+:Recebe o critério de busca (campo e valor do filtro);
+:Envia a solicitação de busca filtrada para o sistema;
+
+partition "Processamento na Infraestrutura" {
+  :A API do sistema recebe os filtros aplicados;
+  :Realiza a busca pelas informações direto no banco de dados;
+  :O banco de dados devolve os registros encontrados;
+  :A API organiza os dados obtidos e os envia de volta;
+}
+
+if (Foram encontrados chamados para o filtro?) then (sim)
+  :Atualiza a lista de chamados na memória do usuário;
+  :Exibe os chamados filtrados na tela;
+else (não)
+  :Limpa a lista atual na tela do usuário;
+  :Exibe a mensagem "Nenhum chamado encontrado para esse filtro";
+endif
+
+:Entrega o resultado final da listagem;
+
+stop
+@enduml

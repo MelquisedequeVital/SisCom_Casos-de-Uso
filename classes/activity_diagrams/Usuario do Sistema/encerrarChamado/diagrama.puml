@@ -1,0 +1,40 @@
+@startuml
+title Diagrama de Atividade - Lógica de Encerramento de Chamado
+
+start
+
+:Usuário solicita o encerramento do chamado;
+
+partition "Atualização do Estado" {
+  :Altera o status do chamado para FECHADO;
+  :Registra automaticamente a data e a hora do encerramento;
+}
+
+partition "Coleta de Feedback (Opcional)" {
+  :Solicita uma avaliação ao usuário que abriu o chamado;
+  if (O usuário preencheu a avaliação?) then (sim)
+    :Grava a nota em estrelas e o comentário de feedback no chamado;
+  else (não)
+    :Ignora a etapa de avaliação;
+  endif
+}
+
+partition "Persistência e Organização da Tela" {
+  :Atualiza o registro do chamado no banco de dados;
+  note right
+    O chamado NÃO é excluído.
+    Ele permanece salvo no histórico 
+    para consultas e relatórios futuros.
+  end note
+  
+  :Remove o chamado da lista visual de pendências do usuário;
+}
+
+partition "Histórico do Sistema" {
+  :Registra o encerramento do chamado no histórico de auditoria;
+}
+
+:Exibe a mensagem "Chamado Encerrado com Sucesso";
+
+stop
+@enduml

@@ -25,6 +25,7 @@ class UsuarioService {
     + verificarSenhasIdenticas(senha: String, confirmacao: String): Boolean
     + gerarEstadoSenhaPendente(usuario: UsuarioDoSistema): void
     + enviarNotificacaoEmail(usuario: UsuarioDoSistema, assunto: String): void
+    + gerarLogAuditoria(usuario: UsuarioDoSistema, acao: AcaoSistema): void
 }
 
 UsuarioService --- API_CEHAP : "consome"
@@ -59,7 +60,6 @@ class UsuarioDoSistema {
     + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
     + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
     + encerrarChamado(chamado: Chamado): void
-    + buscarChamados(): List<Chamado>
     + filtrarChamados(campo: String, valor: String): List<Chamado>
     + enviarMensagem(mensagem: Mensagem): void
     + enviarArquivo(anexo: String): void
@@ -100,7 +100,6 @@ UsuarioDoSistema o-- StatusAtividade : "possui"
 enum StatusChamado {
     ABERTO
     EM_ANDAMENTO
-    RESOLVIDO
     FECHADO
 }
 
@@ -158,11 +157,8 @@ class Chamado {
     ' (Input do Requerido)
     - explicacaoResolucao: String
     + realizarTriagem(): UsuarioDoSistema
-    + realizarChamado(): void
-    + vincularChamadoAtendente(atendente: UsuarioDoSistema): void
-    + notificarAtendente(): void
-    + atualizarListaFila(): void
-    -notificarUsuarioRequerido(): void
+    +registrarAvaliacao(estrelas: int, feedback: String): void
+    + notificarUsuarioRequerido(): void
 }
 
 Chamado *-- Urgencia
@@ -250,6 +246,18 @@ Sala "1" o-- "0..*" Reuniao : "aloca"
 Setor "1" --- "*" RelatorioGrafico : "fornece dados para"
 Gestor ..> RelatorioGrafico : "visualiza"
 UsuarioDoSistema "*" -- "*" Reuniao : "participa de"
+
+class Notificacao {
+    - idNotificacao: int
+    - titulo: String
+    - mensagemCorpo: String
+    - dataHoraCriacao: DateTime
+    - visualizada: Boolean
+}
+
+' Relações da Notificação
+UsuarioDoSistema "1" *-- "0..*" Notificacao : "recebe"
+Chamado "1" <-- "0..*" Notificacao : "origina"
 
 
 @enduml

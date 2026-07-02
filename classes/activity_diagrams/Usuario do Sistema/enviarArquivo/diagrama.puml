@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de Atividade - Lógica de Envio de Arquivo
+
+start
+
+:Usuário seleciona o arquivo e clica em enviar;
+
+partition "Validação do Arquivo" {
+  :Verifica se o tamanho do arquivo está dentro do limite permitido;
+  :Verifica se a extensão do arquivo é segura e permitida;
+}
+
+if (Arquivo passou nas validações?) then (sim)
+  
+  if (Existe conexão com a internet?) then (sim)
+    
+    partition "Processamento e Upload" {
+      :Envia o arquivo físico para o servidor de armazenamento;
+      :Recebe de volta o link/URL de onde o arquivo foi salvo;
+    }
+    
+    partition "Registro da Mensagem" {
+      :Cria o balão da mensagem associando o arquivo ao link gerado;
+      :Salva o registro da mensagem com o anexo no banco de dados;
+    }
+    
+    :Exibe o arquivo enviado na tela do chat;
+    :Registra a ação no histórico de auditoria do sistema;
+
+  else (não)
+    :Exibe o alerta: "Não é possível enviar arquivos estando offline";
+  endif
+
+else (não)
+  :Exibe o alerta: "Arquivo inválido (muito grande ou formato não suportado)";
+endif
+
+stop
+@enduml

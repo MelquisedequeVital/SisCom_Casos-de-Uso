@@ -1,0 +1,39 @@
+@startuml
+title Diagrama de Atividade - Lógica de Alteração de Status do Chamado
+
+start
+
+:Recebe a solicitação de alteração com o novo status desejado;
+:Modifica o status atual do chamado no sistema;
+
+if (O novo status é?) then (FECHADO)
+  :Registra a data e a hora exata do encerramento do chamado;
+  :Remove o atendente responsável da fila ativa de atendimentos do setor;
+
+else if (O novo status é?) then (EM ANDAMENTO)
+  :Registra a data e a hora de início do atendimento;
+  
+  partition "Comunicação com o Usuário" {
+    :Envia uma notificação para o usuário que abriu o chamado;
+    note right
+      Informa ao requerente que o atendente 
+      começou a trabalhar no problema dele.
+    end note
+  }
+
+else if (O novo status é?) then (PENDENTE / REABERTO)
+  :Apaga a data de encerramento anterior (caso exista);
+  
+  partition "Comunicação com a Equipe" {
+    :Envia uma notificação para o atendente ou equipe do setor;
+    note right
+      Avisa que o chamado voltou para a fila 
+      ou precisa de atenção novamente.
+    end note
+  }
+endif
+
+:Confirma a alteração bem-sucedida do estado do chamado;
+
+stop
+@enduml

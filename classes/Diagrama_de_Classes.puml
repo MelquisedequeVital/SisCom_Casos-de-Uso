@@ -18,11 +18,13 @@ interface API_CEHAP {
 
 
 class UsuarioService {
-    +validarCredenciais(email: String, senha: String): Boolean
-    +salvarSenha(usuarioEmail: String, novaSenha: String): void
-    +atualizarRegistroUsuario(usuario: UsuarioDoSistema): void
-
-
+    + validarCredenciais(email: String, senha: String): Boolean
+    + salvarSenha(usuarioEmail: String, novaSenha: String): void
+    + atualizarRegistroUsuario(usuario: UsuarioDoSistema): void
+    + verificarRequisitosComplexidade(senha: String): Boolean
+    + verificarSenhasIdenticas(senha: String, confirmacao: String): Boolean
+    + gerarEstadoSenhaPendente(usuario: UsuarioDoSistema): void
+    + enviarNotificacaoEmail(usuario: UsuarioDoSistema, assunto: String): void
 }
 
 UsuarioService --- API_CEHAP : "consome"
@@ -41,52 +43,44 @@ enum StatusAtividade {
 class Setor {
     -nome: String
     -codigo: String
-
     -cargaAtualAtendimentos: int
 }
 
 class UsuarioDoSistema {
-    -id: UUID
-    -emailInstitucional: String
-    -senha: String
-    -senhaPendente: Boolean
-    -chamados: List<Chamado>
-    +abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
-    +atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
-    +encerrarChamado(chamado: Chamado): void
-    +buscarChamados(): List<Chamado>
-    +filtrarChamados(campo: String, valor: String): List<Chamado>
-
+    - id: UUID
+    - emailInstitucional: String
+    - senha: String
+    - senhaPendente: Boolean
+    - chamados: List<Chamado>
+    + abrirChamado(motivo: String, mensagemInicial: String, urgencia: Urgencia, setorDestino: Setor): void
+    + atualizarStatusChamado(chamado: Chamado, novoStatus: Status): void
+    + encerrarChamado(chamado: Chamado): void
+    + buscarChamados(): List<Chamado>
+    + filtrarChamados(campo: String, valor: String): List<Chamado>
     + enviarMensagem(mensagem: Mensagem): void
     + enviarArquivo(anexo: String): void
-    + visualizarCalendario(): void
 }
 
 class Administrador {
-    +bloquearUsuario(usuario: UsuarioDoSistema): void
-    +redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
-    +buscarUsuarios(): List<UsuarioDoSistema>
-    +filtrarLogsAuditoria(campo: String, valor: String): List<LogAuditoria>
-
+    + bloquearUsuario(usuario: UsuarioDoSistema): void
+    + redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
+    + buscarUsuarios(): List<UsuarioDoSistema>
+    + filtrarLogsAuditoria(campo: String, valor: String): List<LogAuditoria>
     + bloquearAcessoUsuario(usuario: UsuarioDoSistema): void
     + buscarUsuarioPorNomeOuMatricula(termo: String): List<UsuarioDoSistema>
     + alterarPermissoes(usuario: UsuarioDoSistema): void
-    + visualizarDetalhesEventoCritico(log: LogAuditoria): void
     + gerenciarSalasReuniao(): void
-
     + cadastrarSetoresInternos(setor: Setor): void
 }
 
 class Gestor {
-    +buscarChamadosdoSetor(): List<Chamado>
-
-    + visualizarFilaSetor(): List<Chamado>
+    + buscarChamadosdoSetor(): List<Chamado>
+    + buscarFilaSetor(): List<Chamado>
     + iniciarChatDireto(destinatario: UsuarioDoSistema): void
     + agendarReuniao(): void
     + gerarRelatorioGrafico(): RelatorioGrafico
     + pesquisarHistoricoChats(filtro: String): List<Chat>
-
-    -exportarRelatorio(): void 
+    - exportarRelatorio(): void 
 }
 
 UsuarioDoSistema <|-- Administrador
@@ -102,6 +96,7 @@ UsuarioDoSistema o-- StatusAtividade : "possui"
 enum StatusChamado {
     ABERTO
     EM_ANDAMENTO
+    RESOLVIDO
     FECHADO
 }
 
@@ -111,6 +106,15 @@ enum Urgencia {
     ALTA
 }
 
+class Anexo {
+    - idAnexo: UUID
+    - nomeArquivo: String
+    - tamanhoMB: int
+    - extensao: String
+    - urlArmazenamento: String
+    + validarTamanhoEPermissao(): Boolean
+}
+
 class Mensagem {
     -idMensagem: UUID
     -conteudo: String
@@ -118,28 +122,19 @@ class Mensagem {
     -dataEnvio: Date
     -horaEnvio: Time
     -lido: Boolean
-
-    - anexo: String
-
     + exibirMensagem(): void
     + reterMensagemLocalmente(): void
-
-    + validarAnexo(): Boolean
 }
-'checar se anexo pode virar um objeto separado, com atributos como tipo, tamanho, etc.
 
 class Chat {
     - participantes: List<UsuarioDoSistema>
     - cacheOffline: List<Mensagem>
-    
     - tipoChat: String
     - statusSincronizacao: String
-
     + enviarMensagem(mensagem: Mensagem): void
     + enviarAnexo(anexo: Anexo): void
     + exibirMensagens(): void
     + salvarCacheOffline(mensagem: Mensagem): void
-
     + verificarInformacoesValidas(): Boolean
     + validarCampos(): Boolean
     + sincronizarDadosServidor(): void
@@ -149,17 +144,20 @@ class Chat {
 }
 
 class Chamado {
-    -motivo: String
-    -mensagemInicial: String
-    -dataHoraAbertura: DateTime
-    -dataHoraFechamento: DateTime
-    +realizarTriagem(): UsuarioDoSistema
-    
+    - motivo: String
+    - mensagemInicial: String
+    - dataHoraAbertura: DateTime
+    - dataHoraFechamento: DateTime
+    ' (Avaliação do Requente)
+    - avaliacaoEstrelas: int
+    - respostaFeedback: String
+    ' (Input do Requerido)
+    - explicacaoResolucao: String
+    + realizarTriagem(): UsuarioDoSistema
     + realizarChamado(): void
     + vincularChamadoAtendente(atendente: UsuarioDoSistema): void
     + notificarAtendente(): void
     + atualizarListaFila(): void
-    
     -aplicarRoundRobin(): void
     -notificarUsuarioRequerido(): void
 }
@@ -169,6 +167,7 @@ Chamado *-- StatusChamado
 Chamado *-- Setor
 Chamado *-- Chat
 Chat *-- "0..*" Mensagem
+Mensagem "1" *-- "0..1" Anexo : "pode conter"
 
 ' Vínculos entre Usuários e Chamados
 Chamado "0..*" o-- "1" UsuarioDoSistema : "criado por (requerente)"
@@ -186,7 +185,6 @@ enum AcaoSistema {
     ENCERRAR_CHAMADO
     ENVIAR_MENSAGEM
     ENVIAR_ANEXO
-
     ACESSO_SISTEMA
 }
 
@@ -196,7 +194,6 @@ class LogAuditoria {
     -acao: AcaoSistema
     -ip: String
     -identificadorUsuario: UUID
-
     + registrarLogAcesso(): void
 }
 
@@ -242,13 +239,13 @@ class Calendario {
     - mesReferencia: int
     - anoReferencia: int
     + verificarConflitosHorarios(): boolean
-    + visualizarCalendario(): void
 }
 
 ' Relacionamentos do Módulo 5
 Calendario "1" *-- "0..*" Reuniao : "organiza"
 Sala "1" o-- "0..*" Reuniao : "aloca"
-Setor o-- RelatorioGrafico : "fornece dados para"
+Setor "1" --- "*" RelatorioGrafico : "fornece dados para"
+Gestor ..> RelatorioGrafico : "visualiza"
 UsuarioDoSistema "*" -- "*" Reuniao : "participa de"
 
 

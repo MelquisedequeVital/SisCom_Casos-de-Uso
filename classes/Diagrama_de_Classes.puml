@@ -21,6 +21,7 @@ class UsuarioService {
     +validarCredenciais(email: String, senha: String): Boolean
     +salvarSenha(usuarioEmail: String, novaSenha: String): void
     +atualizarRegistroUsuario(usuario: UsuarioDoSistema): void
+    +validarDadosChamado(chamado: Chamado): Boolean
 
 
 }
@@ -155,7 +156,6 @@ class Chamado {
     -dataHoraFechamento: DateTime
     +realizarTriagem(): UsuarioDoSistema
     
-    + realizarChamado(): void
     + vincularChamadoAtendente(atendente: UsuarioDoSistema): void
     + notificarAtendente(): void
     + atualizarListaFila(): void

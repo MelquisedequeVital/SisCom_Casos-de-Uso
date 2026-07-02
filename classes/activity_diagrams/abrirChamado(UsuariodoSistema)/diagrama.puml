@@ -1,0 +1,27 @@
+@startuml
+
+start
+
+:instanciar Chamado;
+:Preencher dados do Chamado: motivo, mensagem inicial, urgência, setor destino;
+:Chamado valida dados foram preenchidos corretamente;
+
+if (dados válidos?) then (sim)
+  :Instanciar UsuarioService;
+  :Chamar guardarChamado(chamado) no UsuarioService;
+  :UsuarioService valida dados do chamado;
+  
+  if (dados válidos no Service?) then (sim)
+    :UsuarioService persiste chamado no banco de dados;
+    :UsuarioService retorna sucesso para o usuário;
+  else (não)
+    :UsuarioService retorna erro para o usuário;
+  endif
+
+else (não)
+  :Chamado retorna erro para o usuário;
+endif
+
+stop
+
+@enduml

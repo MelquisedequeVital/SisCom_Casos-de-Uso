@@ -247,5 +247,17 @@ Setor "1" --- "*" RelatorioGrafico : "fornece dados para"
 Gestor ..> RelatorioGrafico : "visualiza"
 UsuarioDoSistema "*" -- "*" Reuniao : "participa de"
 
+class Notificacao {
+    - idNotificacao: int
+    - titulo: String
+    - mensagemCorpo: String
+    - dataHoraCriacao: DateTime
+    - visualizada: Boolean
+}
+
+' Relações da Notificação
+UsuarioDoSistema "1" *-- "0..*" Notificacao : "recebe"
+Chamado "1" <-- "0..*" Notificacao : "origina"
+
 
 @enduml

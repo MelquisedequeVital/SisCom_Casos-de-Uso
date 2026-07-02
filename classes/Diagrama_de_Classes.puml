@@ -248,7 +248,7 @@ class Calendario {
 ' Relacionamentos do Módulo 5
 Calendario "1" *-- "0..*" Reuniao : "organiza"
 Sala "1" o-- "0..*" Reuniao : "aloca"
-Gestor "1" --> "*" RelatorioGrafico : "gera"
+Setor o-- RelatorioGrafico : "fornece dados para"
 UsuarioDoSistema "*" -- "*" Reuniao : "participa de"
 
 

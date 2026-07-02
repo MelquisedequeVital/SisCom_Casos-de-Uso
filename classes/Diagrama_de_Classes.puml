@@ -64,11 +64,11 @@ class UsuarioDoSistema {
 }
 
 class Administrador {
-    + bloquearUsuario(usuario: UsuarioDoSistema): void
+    + desativarUsuario(usuario: UsuarioDoSistema): void
     + redefinirSenha(usuario: UsuarioDoSistema, novaSenha: String): void
     + buscarUsuarios(): List<UsuarioDoSistema>
     + filtrarLogsAuditoria(campo: String, valor: String): List<LogAuditoria>
-    + bloquearAcessoUsuario(usuario: UsuarioDoSistema): void
+    + suspenderAcessoTemporariamente(usuario: UsuarioDoSistema): void
     + buscarUsuarioPorNomeOuMatricula(termo: String): List<UsuarioDoSistema>
     + alterarPermissoes(usuario: UsuarioDoSistema): void
     + gerenciarSalasReuniao(): void

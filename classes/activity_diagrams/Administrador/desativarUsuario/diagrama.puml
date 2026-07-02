@@ -1,0 +1,25 @@
+@startuml
+title Diagrama de Atividade - Desativar Usuário
+
+|Administrador|
+start
+:Selecionar usuário para desativação;
+:Confirmar comando de desativação;
+
+|Sistema|
+if (Usuário alvo é o próprio Administrador logado?) then (Sim)
+  :Exibir mensagem de erro de autodesativação;
+else (Não)
+  if (Usuário já está inativo?) then (Sim)
+    :Exibir mensagem de conta já desativada;
+  else (Não)
+    :Alterar status do usuário para Inativo;
+    :Invalidar sessões ativas do usuário;
+    :Registrar log de auditoria da desativação;
+    :Exibir mensagem de sucesso;
+  endif
+  endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

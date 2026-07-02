@@ -1,0 +1,23 @@
+@startuml
+title Diagrama de Atividade - Suspender Acesso Temporariamente
+
+|Administrador|
+start
+:Selecionar usuário para suspensão;
+:Confirmar bloqueio temporário de acesso;
+
+|Sistema|
+if (Usuário já possui acesso suspenso?) then (Sim)
+  :Exibir mensagem de usuário já suspenso;
+else (Não)
+  :Alterar atributo de acesso suspenso para verdadeiro;
+  :Encerrar tokens de autenticação ativos;
+  :Remover usuário das filas de triagem ativa;
+  :Enviar e-mail institucional sobre suspensão;
+  :Registrar log de auditoria do bloqueio;
+  :Exibir mensagem de confirmação;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

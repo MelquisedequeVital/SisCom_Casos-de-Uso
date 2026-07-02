@@ -1,0 +1,35 @@
+@startuml
+title Diagrama de Atividade - Gerenciar Salas de Reunião
+
+|Administrador|
+start
+:Acessar painel de gerenciamento de salas;
+if (Qual ação deseja realizar?) then (Cadastrar Nova Sala)
+  :Inserir nome, capacidade e recursos da sala;
+  :Confirmar inclusão;
+  |Sistema|
+  :Validar duplicidade de nome da sala;
+  if (Sala já existe?) then (Sim)
+    :Exibir aviso de sala duplicada;
+  else (Não)
+    :Persistir dados da nova sala;
+    :Exibir mensagem de sucesso;
+  endif
+else (Remover Sala Existente)
+  |Administrador|
+  :Selecionar sala para exclusão;
+  :Confirmar exclusão;
+  |Sistema|
+  :Verificar reuniões agendadas na sala;
+  if (Existem reuniões ativas vinculadas?) then (Sim)
+    :Exibir erro de impedimento por vínculo ativo;
+  else (Não)
+    :Remover registro da sala do banco;
+    :Exibir mensagem de sucesso;
+  endif
+endif
+
+|Sistema|
+#palegreen:Losango de Fusão;
+stop
+@enduml

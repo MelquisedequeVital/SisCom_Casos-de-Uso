@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Atividade - Redefinir Senha
+
+|Administrador|
+start
+:Digitar nova senha para o usuário;
+:Confirmar alteração de senha;
+
+|Sistema|
+if (Senha atende aos critérios de complexidade?) then (Não)
+  :Exibir mensagem de senha fraca;
+else (Sim)
+  if (Senha é idêntica à senha atual?) then (Sim)
+    :Exibir mensagem de senha repetida;
+  else (Não)
+    :Criptografar nova senha;
+    :Atualizar hash da senha no banco de dados;
+    :Alterar flag de senha pendente para falso;
+    :Enviar e-mail de notificação ao usuário;
+    :Registrar log de auditoria da alteração;
+    :Exibir mensagem de sucesso;
+  endif
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

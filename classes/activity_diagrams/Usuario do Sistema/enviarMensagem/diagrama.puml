@@ -1,40 +1,31 @@
 @startuml
-title Diagrama de Atividade - Método enviarMensagem()
+title Diagrama de Atividade - Lógica de Envio de Mensagem
 
 start
 
 :Usuário digita o texto e clica em enviar;
-:Instanciar objeto Mensagem;
-note right
-  Define idMensagem, conteudo, remetente,
-  dataEnvio, horaEnvio e lido = false.
-end note
-
-:Adicionar Mensagem na tela do Chat (UI);
+:Define os dados básicos da mensagem (remetente, conteúdo, data e hora);
+:Exibe a mensagem imediatamente na tela do chat;
 
 if (Dispositivo está online?) then (sim)
-  :Chamar enviarMensagem(mensagem) no Chat;
   
-  partition "Camada de Negócio e Infraestrutura" {
-    :UsuarioService repassa a mensagem para a API_CEHAP;
-    :API_CEHAP persiste a mensagem no BD_CEHAP;
+  partition "Processamento em Nuvem" {
+    :Envia a mensagem para o servidor através do sistema;
+    :Salva o registro da mensagem no banco de dados;
   }
   
-  :Atualizar status da mensagem no Chat para "Enviada" (Sincronizada);
+  :Atualizar o ícone da mensagem para "Enviada";
 
 else (não)
-  partition "Persistência Offline" {
-    :Chamar salvarCacheOffline(mensagem) no Chat;
-    note right
-      Como o sistema está sem rede,
-      a mensagem vai para o cacheOffline.
-    end note
+  
+  partition "Armazenamento Local" {
+    :Guarda a mensagem temporariamente na memória local (cache offline);
   }
   
-  :Atualizar status da mensagem no Chat para "Pendente de Envio" (ícone de relógio);
+  :Atualizar o ícone da mensagem para "Pendente" (Aguardando conexão);
 endif
 
-:Gerar LogAuditoria (AcaoSistema = ENVIAR_MENSAGEM) [via Service];
+:Registra o envio da mensagem no histórico de auditoria;
 
 stop
 @enduml

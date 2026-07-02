@@ -1,39 +1,39 @@
 @startuml
-title Diagrama de Atividade - Método atualizarStatusChamado()
+title Diagrama de Atividade - Lógica de Alteração de Status do Chamado
 
 start
 
-:Recebe (chamado, novoStatus) como parâmetros;
-:Muda o atributo StatusChamado para o novoStatus recebido;
+:Recebe a solicitação de alteração com o novo status desejado;
+:Modifica o status atual do chamado no sistema;
 
-if (novoStatus é?) then (FECHADO)
-  :Definir dataHoraFechamento do Chamado com o horário atual;
-  :Desvincular o atendente da fila ativa do setor;
+if (O novo status é?) then (FECHADO)
+  :Registra a data e a hora exata do encerramento do chamado;
+  :Remove o atendente responsável da fila ativa de atendimentos do setor;
 
-else if (novoStatus é?) then (EM_ANDAMENTO)
-  :Definir dataHoraInicioAtendimento do Chamado com o horário atual;
+else if (O novo status é?) then (EM ANDAMENTO)
+  :Registra a data e a hora de início do atendimento;
   
-  partition "Notificação do Sistema" {
-    :Chamar notificarUsuarioRequerente() no Chamado;
+  partition "Comunicação com o Usuário" {
+    :Envia uma notificação para o usuário que abriu o chamado;
     note right
-      Dispara um alerta/push para o usuário
-      avisando que o chamado começou a ser atendido.
+      Informa ao requerente que o atendente 
+      começou a trabalhar no problema dele.
     end note
   }
 
-else if (novoStatus é?) then (PENDENTE / REABERTO)
-  :Limpar dataHoraFechamento (se houver);
+else if (O novo status é?) then (PENDENTE / REABERTO)
+  :Apaga a data de encerramento anterior (caso exista);
   
-  partition "Notificação do Sistema" {
-    :Chamar notificarAtendente() no Chamado;
+  partition "Comunicação com a Equipe" {
+    :Envia uma notificação para o atendente ou equipe do setor;
     note right
-      Se o chamado foi reaberto ou voltou para a fila,
-      notifica a equipe/atendente novamente.
+      Avisa que o chamado voltou para a fila 
+      ou precisa de atenção novamente.
     end note
   }
 endif
 
-:Retorna confirmação de alteração de estado do Chamado;
+:Confirma a alteração bem-sucedida do estado do chamado;
 
 stop
 @enduml

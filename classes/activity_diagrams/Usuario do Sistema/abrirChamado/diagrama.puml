@@ -1,35 +1,40 @@
 @startuml
-title Diagrama de Atividade - Abrir Chamado (Fluxo Completo)
+title Diagrama de Atividade - Lógica de Abertura de Chamado
 
 start
 
-:Instanciar Chamado;
-:Preencher dados do Chamado: motivo, mensagem inicial, urgência, setor destino;
-:Chamado valida se dados foram preenchidos corretamente;
+:Usuário preenche os dados básicos do chamado;
+note right
+  Informa o motivo, mensagem inicial,
+  urgência e o setor de destino.
+end note
 
-if (dados válidos?) then (sim)
-  :Instanciar UsuarioService;
-  :Chamar guardarChamado(chamado) no UsuarioService;
-  :UsuarioService valida dados do chamado;
+:Valida se as informações obrigatórias foram preenchidas;
+
+if (Dados do preenchimento são válidos?) then (sim)
+  :O sistema verifica as regras de negócio do chamado;
   
-  if (dados válidos no Service?) then (sim)
-    :UsuarioService persiste chamado no banco de dados;
+  if (O chamado atende aos requisitos do sistema?) then (sim)
+    :Grava o novo chamado de forma definitiva no banco de dados;
     
-    partition "Processamento Interno do Chamado" {
-      :Chamar realizarTriagem() no Chamado;
-      note right
-        Encontra o atendente, instancia o Chat
-        e vincula os participantes.
-      end note
+    partition "Distribuição Automática (Triagem)" {
+      :Identifica o atendente disponível com menor carga no setor de destino;
+      :Vincula o atendente escolhido ao chamado;
+      :Instancia a nova sala de chat do atendimento;
+      :Conecta o usuário que abriu o chamado e o atendente ao chat;
     }
     
-    :UsuarioService retorna sucesso para o usuário com Chat iniciado;
+    partition "Comunicação com a Equipe" {
+      :Envia uma notificação para o atendente que acabou de receber o chamado;
+    }
+    
+    :Confirma o sucesso da operação para o usuário com o chat pronto para uso;
   else (não)
-    :UsuarioService retorna erro para o usuário;
+    :Informa ao usuário o erro de validação do sistema;
   endif
 
 else (não)
-  :Chamado retorna erro para o usuário;
+  :Informa ao usuário que há campos obrigatórios inválidos;
 endif
 
 stop

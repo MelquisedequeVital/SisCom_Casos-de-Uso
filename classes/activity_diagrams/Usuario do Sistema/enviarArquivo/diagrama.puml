@@ -1,48 +1,38 @@
 @startuml
-title Diagrama de Atividade - Método enviarArquivo()
+title Diagrama de Atividade - Lógica de Envio de Arquivo
 
 start
 
-:Usuário seleciona um arquivo e clica em enviar;
-:Instanciar objeto Anexo;
-note right
-  Preenche idAnexo, nomeArquivo, 
-  tamanhoMB e extensao com os dados do arquivo.
-end note
+:Usuário seleciona o arquivo e clica em enviar;
 
-:Chamar validarTamanhoEPermissao() no Anexo;
+partition "Validação do Arquivo" {
+  :Verifica se o tamanho do arquivo está dentro do limite permitido;
+  :Verifica se a extensão do arquivo é segura e permitida;
+}
 
-if (Arquivo é válido?) then (sim)
+if (Arquivo passou nas validações?) then (sim)
   
-  if (Dispositivo está online?) then (sim)
+  if (Existe conexão com a internet?) then (sim)
     
-    partition "Upload do Arquivo" {
-      :UsuarioService envia o arquivo para a API_CEHAP;
-      :API_CEHAP faz o upload para o servidor de arquivos/cloud;
-      :API_CEHAP retorna a urlArmazenamento gerada;
-      :Define o atributo urlArmazenamento no objeto Anexo;
+    partition "Processamento e Upload" {
+      :Envia o arquivo físico para o servidor de armazenamento;
+      :Recebe de volta o link/URL de onde o arquivo foi salvo;
     }
     
-    partition "Vinculação ao Chat" {
-      :Instanciar objeto Mensagem (tipo correspondente a arquivo);
-      :Vincular o Anexo à Mensagem;
-      :Chamar enviarMensagem(mensagem) no Chat;
-      :API_CEHAP persiste o registro da mensagem e anexo no BD_CEHAP;
+    partition "Registro da Mensagem" {
+      :Cria o balão da mensagem associando o arquivo ao link gerado;
+      :Salva o registro da mensagem com o anexo no banco de dados;
     }
     
-    :Exibe o arquivo enviado com sucesso no Chat;
-    :Gerar LogAuditoria (AcaoSistema = ENVIAR_ANEXO) [via Service];
+    :Exibe o arquivo enviado na tela do chat;
+    :Registra a ação no histórico de auditoria do sistema;
 
   else (não)
-    :Exibe mensagem "Não é possível enviar arquivos estando offline";
-    note right
-      Arquivos pesados geralmente não vão para o 
-      cacheOffline por limitações de armazenamento local.
-    end note
+    :Exibe o alerta: "Não é possível enviar arquivos estando offline";
   endif
 
 else (não)
-  :Exibe alerta de erro (Ex: "Arquivo muito grande ou extensão não permitida");
+  :Exibe o alerta: "Arquivo inválido (muito grande ou formato não suportado)";
 endif
 
 stop

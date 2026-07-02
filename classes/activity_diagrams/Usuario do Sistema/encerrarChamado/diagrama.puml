@@ -1,49 +1,40 @@
 @startuml
-title Diagrama de Atividade - Método encerrarChamado()
+title Diagrama de Atividade - Lógica de Encerramento de Chamado
 
 start
 
-:Usuário solicita encerramento do Chamado;
+:Usuário solicita o encerramento do chamado;
 
-partition "Atualização do Status" {
-  :Chamar atualizarStatusChamado(chamado, FECHADO) em UsuarioDoSistema;
-  note right
-    Internamente, este método:
-    1. Altera o StatusChamado para FECHADO.
-    2. Define a dataHoraFechamento atual.
-  end note
+partition "Atualização do Estado" {
+  :Altera o status do chamado para FECHADO;
+  :Registra automaticamente a data e a hora do encerramento;
 }
 
 partition "Coleta de Feedback (Opcional)" {
-  :Solicitar avaliação do usuário requerente;
-  if (Usuário preencheu avaliação?) then (sim)
-    :Chamar registrarAvaliacao(estrelas, feedback) no Chamado;
-    :Salvar avaliação nos atributos internos;
+  :Solicita uma avaliação ao usuário que abriu o chamado;
+  if (O usuário preencheu a avaliação?) then (sim)
+    :Grava a nota em estrelas e o comentário de feedback no chamado;
   else (não)
-    :Ignorar avaliação;
+    :Ignora a etapa de avaliação;
   endif
 }
 
-partition "Persistência e Desvinculação" {
-  :UsuarioService atualiza o registro do Chamado no BD;
+partition "Persistência e Organização da Tela" {
+  :Atualiza o registro do chamado no banco de dados;
   note right
     O chamado NÃO é excluído.
-    Ele permanece salvo no BD_CEHAP
-    para fins de consulta futura.
+    Ele permanece salvo no histórico 
+    para consultas e relatórios futuros.
   end note
   
-  :Remover Chamado da lista ativa de chamados visualizados pelo Usuário;
+  :Remove o chamado da lista visual de pendências do usuário;
 }
 
-partition "Auditoria do Sistema" {
-  :Chamar gerarLogAuditoria(usuario, ENCERRAR_CHAMADO) no UsuarioService;
-  note right
-    O Service cria o objeto LogAuditoria
-    e o persiste no banco de dados.
-  end note
+partition "Histórico do Sistema" {
+  :Registra o encerramento do chamado no histórico de auditoria;
 }
 
-:Exibir mensagem de "Chamado Encerrado com Sucesso";
+:Exibe a mensagem "Chamado Encerrado com Sucesso";
 
 stop
 @enduml

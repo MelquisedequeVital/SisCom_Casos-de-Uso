@@ -1,29 +1,27 @@
 @startuml
-title Diagrama de Atividade - Método filtrarChamados() (Com Camada de API)
+title Diagrama de Atividade - Lógica de Filtragem de Chamados
 
 start
 
-:Recebe (campo, valor) como parâmetros;
+:Recebe o critério de busca (campo e valor do filtro);
+:Envia a solicitação de busca filtrada para o sistema;
 
-:Instanciar UsuarioService;
-:UsuarioService solicita busca filtrada para a API_CEHAP;
-
-partition "Camada de Infraestrutura (API & Banco)" {
-  :API_CEHAP recebe a requisição com os filtros;
-  :API_CEHAP executa a consulta diretamente no BD_CEHAP;
-  :BD_CEHAP retorna os dados brutos para a API_CEHAP;
-  :API_CEHAP mapeia os dados e envia a List<Chamado> para o UsuarioService;
+partition "Processamento na Infraestrutura" {
+  :A API do sistema recebe os filtros aplicados;
+  :Realiza a busca pelas informações direto no banco de dados;
+  :O banco de dados devolve os registros encontrados;
+  :A API organiza os dados obtidos e os envia de volta;
 }
 
-if (Lista recebida pelo Service contém elementos?) then (sim)
-  :Atualiza a variável local (List<Chamado>) do Usuário;
+if (Foram encontrados chamados para o filtro?) then (sim)
+  :Atualiza a lista de chamados na memória do usuário;
   :Exibe os chamados filtrados na tela;
 else (não)
-  :Limpa a variável/lista local do Usuário;
-  :Exibe mensagem "Nenhum chamado encontrado para esse filtro";
+  :Limpa a lista atual na tela do usuário;
+  :Exibe a mensagem "Nenhum chamado encontrado para esse filtro";
 endif
 
-:Retorna a lista obtida;
+:Entrega o resultado final da listagem;
 
 stop
 @enduml

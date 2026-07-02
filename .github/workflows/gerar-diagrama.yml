@@ -1,31 +1,40 @@
 name: Exportar PlantUML para PDF
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - "**/*.puml"
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.puml"
 
 jobs:
-    render-plantuml:
-        runs-on: ubuntu-latest
+  render-plantuml:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout do código
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-            - name: Gerar PDF usando imagem oficial com suporte a PDF
-              run: |
-                  docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "useCases/diagram/Diagrama_de_Uso(SisCom).puml"
-                  docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "classes/Diagrama_de_Classes.puml"
-            - name: Commitar e pushar o PDF de volta para o repositório
-              run: |
-                  git config --global user.name "github-actions[bot]"
-                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Buscar e gerar PDFs de todos os arquivos .puml
+        run: |
+          # Encontra todos os arquivos .puml recursivamente
+          find . -name "*.puml" | while read -r arquivo; do
+            echo "Processando: $arquivo"
+            
+            # Remove o './' inicial que o comando find adiciona para o caminho ficar correto
+            caminho_limpo="${arquivo#./}"
+            
+            # Executa o docker passando o arquivo dinamicamente
+            docker run --rm -v ${{ github.workspace }}:/data ghcr.io/schnatterer/plantuml-pdf -tpdf "$caminho_limpo"
+          done
 
-                  git add "useCases/diagram/Diagrama_de_Uso(SisCom).pdf"
-                  git add "classes/Diagrama_de_Classes.pdf"
+      - name: Commitar e pushar os PDFs de volta para o repositório
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-                  git commit -m "Automação: PDF do PlantUML atualizado" || echo "Sem alterações no diagrama."
-                  git push
+          # Adiciona todos os PDFs gerados no repositório, mantendo a estrutura de pastas
+          git add "**/*.pdf"
+
+          git commit -m "Automação: PDFs do PlantUML atualizados de forma dinâmica" || echo "Sem alterações nos diagramas."
+          git push

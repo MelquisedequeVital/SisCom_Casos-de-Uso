@@ -157,12 +157,8 @@ class Chamado {
     ' (Input do Requerido)
     - explicacaoResolucao: String
     + realizarTriagem(): UsuarioDoSistema
-    + realizarChamado(): void
-    + vincularChamadoAtendente(atendente: UsuarioDoSistema): void
-    + notificarAtendente(): void
-    + atualizarListaFila(): void
     +registrarAvaliacao(estrelas: int, feedback: String): void
-    -notificarUsuarioRequerido(): void
+    + notificarUsuarioRequerido(): void
 }
 
 Chamado *-- Urgencia

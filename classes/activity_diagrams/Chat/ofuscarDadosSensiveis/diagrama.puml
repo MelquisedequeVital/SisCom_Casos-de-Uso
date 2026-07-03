@@ -1,0 +1,31 @@
+@startuml
+title Diagrama de Atividade - Lógica de ofuscarDadosSensiveis()
+
+start
+
+:Recebe o texto bruto digitado pelo usuário na mensagem;
+
+partition "Análise de Padrões (Segurança)" {
+  :Varre o texto em busca de padrões numéricos de documentos (CPF, RG);
+  :Varre o texto em busca de padrões de dados financeiros (Cartões, Contas);
+  :Varre o texto em busca de palavras-chave associadas a credenciais (Senhas);
+}
+
+if (Algum dado sensível foi encontrado no texto?) then (sim)
+  
+  partition "Mascaramento dos Dados" {
+    :Substitui os caracteres centrais do documento por asteriscos (Ex: 123.***.***-00);
+    :Substitui números de cartões por uma tarja de segurança;
+    :Gera um alerta interno informando que a mensagem continha dados protegidos;
+  }
+  
+  :Atualiza o conteúdo da mensagem com o texto já protegido;
+
+else (não)
+  :Mantém o texto original da mensagem intacto;
+endif
+
+:Libera a mensagem tratada para seguir o fluxo de envio;
+
+stop
+@enduml

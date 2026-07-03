@@ -133,11 +133,9 @@ class Chat {
     - statusSincronizacao: String
     + enviarMensagem(mensagem: Mensagem): void
     + enviarAnexo(anexo: Anexo): void
-    + exibirMensagens(): void
     + salvarCacheOffline(mensagem: Mensagem): void
     + validarCampos(): Boolean
     + sincronizarDadosServidor(): void
-    + enviarNotificacaoPush(): void
     + ofuscarDadosSensiveis(): void
 
 }
@@ -154,7 +152,6 @@ class Chamado {
     - explicacaoResolucao: String
     + realizarTriagem(): UsuarioDoSistema
     +registrarAvaliacao(estrelas: int, feedback: String): void
-    + notificarUsuarioRequerido(): void
 }
 
 Chamado *-- Urgencia
@@ -248,6 +245,8 @@ class Notificacao {
     - mensagemCorpo: String
     - dataHoraCriacao: DateTime
     - visualizada: Boolean
+
+    + enviarNotificacao(destinatario: UsuarioDoSistema, canal: String): void
 }
 
 ' Relações da Notificação

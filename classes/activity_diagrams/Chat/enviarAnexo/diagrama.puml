@@ -1,0 +1,43 @@
+@startuml
+title Diagrama de Atividade - Lógica de enviarAnexo()
+
+start
+
+:Recebe os dados do arquivo selecionado;
+
+partition "Validação do Arquivo" {
+  if (O tamanho do arquivo e a extensão são permitidos?) then (sim)
+    :Aprova o arquivo para processamento;
+  else (não)
+    :Exibe o alerta: "Arquivo inválido ou muito grande";
+    stop
+  endif
+}
+
+if (Existe conexão ativa com a internet?) then (sim)
+  
+  partition "Upload e Nuvem" {
+    :Envia o arquivo físico para o servidor de armazenamento;
+    :Recebe de volta o link/URL seguro de onde o arquivo foi salvo;
+  }
+  
+  partition "Registro no Chat" {
+    :Associa o link gerado às propriedades do anexo;
+    :Cria uma interação de chat do tipo 'Arquivo' contendo esse anexo;
+    :Salva o registro do anexo e da mensagem no banco de dados;
+  }
+  
+  :Exibe o arquivo enviado com sucesso na tela do chat;
+  :Dispara uma notificação push para avisar os participantes sobre o arquivo;
+  :Registra a ação de envio de anexo no histórico de auditoria;
+
+else (não)
+  :Exibe o alerta: "Não é possível fazer upload de arquivos estando offline";
+  note right
+    Arquivos físicos dependem do servidor em nuvem
+    e não podem ser guardados no cache offline local.
+  end note
+endif
+
+stop
+@enduml

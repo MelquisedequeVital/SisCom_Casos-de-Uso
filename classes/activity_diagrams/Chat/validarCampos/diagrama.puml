@@ -1,0 +1,27 @@
+@startuml
+title Diagrama de Atividade - Lógica de validarCampos()
+
+start
+
+:Recebe os dados que o usuário inseriu no chat;
+
+if (O campo de texto está vazio ou contém apenas espaços?) then (sim)
+  :Define o resultado da validação como FALSO;
+  :Prepara o alerta: "O texto da mensagem não pode estar vazio";
+
+else if (O tamanho do texto ultrapassa o limite de caracteres do sistema?) then (sim)
+  :Define o resultado da validação como FALSO;
+  :Prepara o alerta: "Mensagem muito longa. Limite de caracteres excedido";
+
+else if (Os participantes do chat estão devidamente identificados?) then (não)
+  :Define o resultado da validação como FALSO;
+  :Prepara o alerta: "Erro de sessão: Participantes não encontrados";
+
+else (sim)
+  :Define o resultado da validação como VERDADEIRO;
+endif
+
+:Retorna o resultado final da validação (Verdadeiro ou Falso);
+
+stop
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+title Diagrama de Atividade - Lógica de sincronizarDadosServidor()
+
+start
+
+:O sistema detecta que a conexão com a internet foi restabelecida;
+:Inicia o processo de varredura no cache offline do chat;
+
+if (Existem mensagens pendentes de envio na lista local?) then (sim)
+  
+  partition "Processamento em Lote" {
+    :Organiza as mensagens pendentes por ordem cronológica (as mais antigas primeiro);
+    
+    while (Mais mensagens para sincronizar?) is (sim)
+      :Envia a mensagem atual da fila para o servidor;
+      
+      if (O servidor salvou a mensagem com sucesso?) then (sim)
+        :Atualiza o status da mensagem no banco local para "Sincronizada";
+        :Altera o ícone da mensagem na tela para "Enviada";
+        :Remove a mensagem da lista de cache offline;
+      else (não)
+        :Mantém a mensagem no cache para tentar novamente no próximo ciclo;
+        :Interrompe o envio em lote para evitar perda de ordem;
+        break
+      endif
+    endwhile
+  }
+  
+  :Emite um aviso interno de "Chat Atualizado";
+
+else (não)
+  :Encerra a checagem sem realizar nenhuma alteração;
+endif
+
+stop
+@enduml

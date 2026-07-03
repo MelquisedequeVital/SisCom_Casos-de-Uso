@@ -1,0 +1,18 @@
+@startuml
+title Diagrama de Atividades - Gestor::agendarReuniao()
+
+start
+:Receber dados do formulário (Título, Data/Hora, Participantes);
+:Instanciar objeto Reuniao;
+:Chamar Calendario.verificarConflitosHorarios();
+if (Existe conflito de horário?) then (sim)
+  :Exibir alerta de conflito na agenda;
+  :Interromper agendamento;
+else (não)
+  :Salvar registro da Reuniao no banco de dados;
+  :Gerar link da plataforma externa;
+  :Notificar participantes convidados;
+  :Exibir mensagem de sucesso;
+endif
+stop
+@enduml

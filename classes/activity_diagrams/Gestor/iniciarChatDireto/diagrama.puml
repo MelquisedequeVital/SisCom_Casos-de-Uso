@@ -1,0 +1,15 @@
+@startuml
+title Diagrama de Atividades - Gestor::iniciarChatDireto()
+
+start
+:Receber objeto do destinatario (UsuarioDoSistema);
+if (Destinatário é válido e está ativo?) then (sim)
+  :Instanciar novo objeto Chat;
+  :Vincular Gestor e Destinatário ao Chat;
+  :Definir tipoChat como "DIRETO";
+  :Redirecionar interface para a tela de mensagens do novo chat;
+else (não)
+  :Exibir erro "Usuário indisponível para chat direto";
+endif
+stop
+@enduml

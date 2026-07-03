@@ -1,0 +1,18 @@
+@startuml
+title Diagrama de Atividades - Gestor::pesquisarHistoricoChats()
+
+start
+:Receber string de filtro (palavras-chave, status, atendente);
+:Validar permissões de auditoria do Gestor;
+if (Filtro está vazio?) then (sim)
+  :Exibir alerta solicitando parâmetros;
+else (não)
+  :Executar busca parametrizada no banco de dados aplicando ofuscação de dados sensíveis;
+  if (Resultados encontrados?) then (sim)
+    :Retornar List<Chat> correspondente;
+  else (não)
+    :Retornar Lista Vazia com mensagem "Nenhum chat encontrado";
+  endif
+endif
+stop
+@enduml

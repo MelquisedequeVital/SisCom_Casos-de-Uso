@@ -1,0 +1,11 @@
+@startuml
+title Diagrama de Atividades - Gestor::buscarFilaSetor()
+
+start
+:Identificar o Setor vinculado ao Gestor;
+:Conectar ao banco de dados;
+:Executar query de chamados filtrando pelo status "ABERTO" ou "PENDENTE";
+:Ordenar resultados por nível de Urgência e DataHoraAbertura;
+:Retornar List<Chamado> formatada para a fila de atendimento;
+stop
+@enduml

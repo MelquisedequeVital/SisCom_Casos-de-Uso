@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Atividade - Enviar Link Externo
+
+|Organizador|
+start
+:Acessar detalhes da reunião agendada;
+:Inserir e-mails dos convidados externos;
+:Confirmar disparo do link;
+
+|Sistema|
+if (E-mails informados possuem formato válido?) then (Não)
+  :Exibir mensagem de erro de destinatário inválido;
+else (Sim)
+  :Recuperar o atributo linkPlataforma da reunião;
+  :Montar mensagem com o convite e o link de acesso;
+  :Disparar e-mails através do servidor SMTP;
+  :Exibir mensagem de confirmação de envio externo;
+endif
+
+stop
+@enduml

@@ -17,6 +17,5 @@ else (Sim)
   :Registrar log interno de alteração de credencial;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

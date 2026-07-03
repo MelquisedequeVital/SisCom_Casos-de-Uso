@@ -18,6 +18,5 @@ else (Sim)
   :Registrar log de alteração de dados;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

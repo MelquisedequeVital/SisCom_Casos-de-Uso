@@ -30,6 +30,5 @@ else (Remover Sala Existente)
 endif
 
 |Sistema|
-#palegreen:Losango de Fusão;
 stop
 @enduml

@@ -20,6 +20,5 @@ else (Não)
   endif
   endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

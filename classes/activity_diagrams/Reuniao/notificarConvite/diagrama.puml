@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Atividade - Notificar Convite
+
+|Sistema|
+start
+:Mapear lista de identificadores dos usuários convidados;
+:Iniciar laço de repetição para cada convidado;
+
+|Banco de Dados (CEHAP)|
+:Inserir alerta na tabela de notificações internas de cada usuário;
+
+|Sistema|
+:Disparar e-mail institucional automático com os detalhes da pauta;
+if (Envio da notificação falhou para algum participante?) then (Sim)
+  :Registrar aviso de falha de entrega no log do sistema;
+else (Não)
+  :Marcar status da notificação como enviada;
+endif
+
+stop
+@enduml

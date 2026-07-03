@@ -1,0 +1,42 @@
+@startuml
+title Diagrama de Atividade - Lógica de validarCredenciais()
+
+start
+
+:Recebe o e-mail e a senha digitados pelo usuário;
+
+partition "Busca do Usuário" {
+  :Consulta o banco de dados para verificar se o e-mail existe;
+  
+  if (O e-mail foi encontrado no sistema?) then (não)
+    :Prepara mensagem genérica: "E-mail ou senha incorretos";
+    :Registra tentativa falha de login na auditoria;
+    :Retorna FALSO;
+    stop
+  endif
+}
+
+partition "Validação de Segurança" {
+  :Recupera a senha criptografada que está salva no banco de dados;
+  :Aplica o algoritmo de hash na senha digitada para comparação;
+  
+  if (A senha digitada corresponde à senha do banco?) then (não)
+    :Prepara mensagem genérica: "E-mail ou senha incorretos";
+    :Registra tentativa falha de login na auditoria;
+    :Retorna FALSO;
+    stop
+  endif
+}
+
+partition "Verificação de Estado da Conta" {
+  if (O usuário possui a marcação 'senhaPendente' ativa?) then (sim)
+    :Redireciona o usuário para a tela de troca obrigatória de senha;
+  endif
+}
+
+:Atualiza a data e hora do último acesso do usuário;
+:Registra o sucesso do login no histórico de auditoria;
+:Retorna VERDADEIRO e libera o acesso ao painel do sistema;
+
+stop
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+title Diagrama de Atividade - Lógica de salvarSenha()
+
+start
+
+:Recebe o e-mail do usuário e a nova senha em texto limpo;
+
+partition "Processamento de Segurança" {
+  :Aplica o algoritmo de criptografia (Gerador de Hash seguro);
+  :Transforma a senha legível em uma sequência de caracteres criptografados;
+  note right
+    Garante que a senha original nunca seja salva
+    em texto aberto no banco de dados.
+  end note
+}
+
+partition "Atualização do Banco de Dados" {
+  :Localiza o registro do usuário através do e-mail fornecido;
+  :Substitui a senha antiga pelo novo hash gerado;
+  
+  if (O usuário estava com o estado de 'senhaPendente' ativo?) then (sim)
+    :Altera o atributo 'senhaPendente' para FALSO;
+    :Libera o acesso definitivo dele às funcionalidades do sistema;
+  endif
+}
+
+:Grava as alterações permanentemente no banco de dados;
+:Gera um Log de Auditoria registrando a alteração de segurança;
+
+stop
+@enduml

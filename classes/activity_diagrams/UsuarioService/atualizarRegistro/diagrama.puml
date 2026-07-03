@@ -1,0 +1,42 @@
+@startuml
+title Diagrama de Atividade - Atualizar Registro de Usuário
+
+|UsuarioService|
+start
+:Receber o objeto Usuário com os dados atualizados;
+
+partition "Validação de Segurança" {
+  if (O e-mail institucional informado é válido?) then (Não)
+    :Exibir mensagem "E-mail inválido ou malformado";
+    stop
+  else (Sim)
+    :Aprovar dados para persistência;
+  endif
+}
+
+|Banco de Dados|
+:Buscar registro atual do usuário pelo ID;
+
+if (O usuário existe no banco de dados?) then (Não)
+  |UsuarioService|
+  :Exibir mensagem "Usuário não encontrado no sistema";
+  stop
+else (Sim)
+  |Banco de Dados|
+  if (O e-mail foi alterado e já está em uso por outro usuário?) then (Sim)
+    |UsuarioService|
+    :Exibir mensagem "Este e-mail já está cadastrado no sistema";
+    stop
+  else (Não)
+    |Banco de Dados|
+    :Mesclar novos dados sobre o registro existente;
+    :Gravar alterações permanentemente no banco de dados;
+  endif
+endif
+
+|UsuarioService|
+:Gera um Log de Auditoria registrando a atualização cadastral;
+:Exibir mensagem "Dados atualizados com sucesso";
+
+stop
+@enduml

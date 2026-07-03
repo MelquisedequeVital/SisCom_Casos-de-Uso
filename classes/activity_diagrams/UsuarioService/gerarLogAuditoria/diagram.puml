@@ -1,0 +1,37 @@
+@startuml
+title Diagrama de Atividade - Lógica de gerarLogAuditoria()
+
+start
+
+:Recebe o usuário que realizou a ação e o tipo de evento (AcaoSistema);
+
+partition "Coleta de Metadados" {
+  :Captura a data e a hora exata do servidor em que o evento ocorreu;
+  :Identifica o endereço IP e a origem do dispositivo que disparou a ação;
+}
+
+partition "Construção do Registro" {
+  :Monta a descrição textual do evento;
+  note right
+    Exemplo: "O usuário X alterou o status
+    do chamado Y para 'Em Andamento'".
+  end note
+  :Gera um identificador único universal (UUID) para este registro de log;
+}
+
+partition "Gravação Permanente" {
+  :Envia o registro de log para uma tabela/banco dedicado de auditoria;
+  :Define o registro como "Somente Leitura" (Imutável);
+  note right
+    Garante que nem o usuário e nem administradores
+    possam apagar ou alterar o histórico de ações.
+  end note
+}
+
+if (O banco de auditoria salvou com sucesso?) then (não)
+  :Dispara um alerta crítico de falha no sistema de segurança;
+  :Grava a falha no log de emergência do servidor local;
+endif
+
+stop
+@enduml

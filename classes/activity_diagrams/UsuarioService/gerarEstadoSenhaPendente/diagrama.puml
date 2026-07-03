@@ -1,0 +1,31 @@
+@startuml
+title Diagrama de Atividade - Lógica de gerarEstadoSenhaPendente()
+
+start
+
+:Recebe o objeto do usuário que passará pela alteração de estado;
+
+partition "Alteração de Estado" {
+  :Modifica o atributo 'senhaPendente' do usuário para VERDADEIRO;
+  note right
+    Esse gatilho avisa a tela de login que
+    o usuário não pode ir direto para o painel.
+  end note
+}
+
+partition "Atualização Cadastral" {
+  :Salva o novo estado do usuário no banco de dados;
+}
+
+partition "Notificação de Segurança" {
+  :Chama a classe Notificacao para enviar um alerta ao usuário;
+  note right
+    Dispara uma Notificação por e-mail com as instruções
+    e avisando que o acesso atual é temporário.
+  end note
+}
+
+:Gera um Log de Auditoria registrando a imposição de troca de senha;
+
+stop
+@enduml

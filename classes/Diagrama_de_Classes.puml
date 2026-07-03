@@ -22,9 +22,7 @@ class UsuarioService {
     + salvarSenha(usuarioEmail: String, novaSenha: String): void
     + atualizarRegistroUsuario(usuario: UsuarioDoSistema): void
     + verificarRequisitosComplexidade(senha: String): Boolean
-    + verificarSenhasIdenticas(senha: String, confirmacao: String): Boolean
     + gerarEstadoSenhaPendente(usuario: UsuarioDoSistema): void
-    + enviarNotificacaoEmail(usuario: UsuarioDoSistema, assunto: String): void
     + gerarLogAuditoria(usuario: UsuarioDoSistema, acao: AcaoSistema): void
 }
 
@@ -123,8 +121,6 @@ class Mensagem {
     -dataEnvio: Date
     -horaEnvio: Time
     -lido: Boolean
-    + exibirMensagem(): void
-    + reterMensagemLocalmente(): void
 }
 
 class Chat {

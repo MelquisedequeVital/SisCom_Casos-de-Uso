@@ -21,6 +21,5 @@ else (Não)
   :Confirmar persistência do rastro de segurança;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

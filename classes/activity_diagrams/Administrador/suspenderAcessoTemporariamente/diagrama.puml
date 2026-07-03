@@ -18,6 +18,5 @@ else (Não)
   :Exibir mensagem de confirmação;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

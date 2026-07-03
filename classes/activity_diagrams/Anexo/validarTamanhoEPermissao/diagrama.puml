@@ -1,0 +1,18 @@
+@startuml
+title Diagrama de Atividades - Anexo::validarTamanhoEPermissao()
+
+start
+:Receber metadados do arquivo (tamanhoMB e extensao);
+if (tamanhoMB <= Limite Máximo Permitido?) then (sim)
+  if (extensao está na lista de formatos seguros?) then (sim)
+    :Retornar True (Arquivo Válido);
+  else (não)
+    :Registrar erro de formato inválido;
+    :Retornar False;
+  endif
+else (não)
+  :Registrar erro de tamanho excedido;
+  :Retornar False;
+endif
+stop
+@enduml

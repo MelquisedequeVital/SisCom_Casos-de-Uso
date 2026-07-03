@@ -1,0 +1,17 @@
+@startuml
+title Diagrama de Atividades - Gestor::gerarRelatorioGrafico()
+
+start
+:Receber período de início e fim da interface;
+:Instanciar objeto RelatorioGrafico;
+:Calcular métricas setoriais (total resolvidos, pendentes, motivos);
+if (Existem dados no período selecionado?) then (sim)
+  :Processar dados para exibição;
+  :Renderizar Gráfico de Barras e Gráfico de Pizza na tela;
+  :Retornar objeto RelatorioGrafico;
+else (não)
+  :Ocultar área de gráficos;
+  :Exibir aviso "Não há dados para o período selecionado";
+endif
+stop
+@enduml

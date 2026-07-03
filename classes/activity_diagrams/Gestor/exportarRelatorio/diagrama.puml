@@ -1,0 +1,12 @@
+@startuml
+title Diagrama de Atividades - Gestor::exportarRelatorio()
+
+start
+:Identificar dados do RelatorioGrafico atualmente exibido;
+:Solicitar formato de exportação ao usuário (Ex: PDF, CSV);
+:Converter dados estruturados (métricas e tabelas) para o formato escolhido;
+:Gerar arquivo criptografado temporário no servidor;
+:Disparar download do arquivo para a máquina do Gestor;
+:Registrar log de exportação de dados no sistema;
+stop
+@enduml

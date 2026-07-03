@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Atividade - Agendar Reunião
+
+|Organizador|
+start
+:Preencher dados da reunião (Título, Data/Hora, Formato, Pauta);
+:Selecionar participantes e a sala desejada;
+:Acionar comando de agendamento;
+
+|Sistema|
+:Chamar rotina de verificação de conflitos de horários;
+if (Existe choque de horário na sala ou com participantes?) then (Sim)
+  :Exibir mensagem de erro de indisponibilidade;
+else (Não)
+  :Persistir dados da Reunião no banco de dados;
+  :Chamar internamente o método notificarConvite();
+  :Exibir mensagem de sucesso do agendamento;
+endif
+
+stop
+@enduml

@@ -22,6 +22,5 @@ else (Sim)
   endif
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

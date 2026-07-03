@@ -22,6 +22,5 @@ else (Sim)
   :Renderizar usuários filtrados na tela;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

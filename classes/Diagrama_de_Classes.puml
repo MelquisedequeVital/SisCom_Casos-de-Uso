@@ -11,7 +11,6 @@ interface BD_CEHAP
 interface API_CEHAP {
     -endpoint: String
     +validarCredenciais(email: String, senha: String): Boolean
-    -aplicarAlgoritmoHash(senha: String): String
     +salvarSenha(usuarioEmail: String, novaSenha: String): void
     +atualizarRegistroUsuario(usuario: UsuarioDoSistema): void
 }
@@ -203,14 +202,13 @@ class Reuniao {
     - formato: String
     + agendarReuniao(): void
     + enviarLinkExterno(): void
-    + notificarConvite(): void
 }
 
 class Sala {
     - idSala: int
     - nomeSala: String
     - statusDisponibilidade: boolean
-    - capacidadeMaxima: int
+    - urlSalaVirtual: String
     + gerenciarSala(): void
 }
 
@@ -249,7 +247,8 @@ class Notificacao {
 
 ' Relações da Notificação
 UsuarioDoSistema "1" *-- "0..*" Notificacao : "recebe"
-Chamado "1" <-- "0..*" Notificacao : "origina"
+Chamado "1" *-- "0..*" Notificacao : "origina"
+Reuniao "1" *-- "0..*" Notificacao : "origina"
 
 
 @enduml

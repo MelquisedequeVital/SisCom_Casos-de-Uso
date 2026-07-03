@@ -1,0 +1,14 @@
+@startuml
+title Diagrama de Atividades - Gestor::buscarChamadosdoSetor()
+
+start
+:Identificar o Setor vinculado ao Gestor logado;
+:Conectar ao banco de dados;
+:Executar query de busca de todos os chamados associados ao ID do Setor;
+if (Existem chamados registrados?) then (sim)
+  :Retornar List<Chamado>;
+else (não)
+  :Retornar Lista Vazia;
+endif
+stop
+@enduml

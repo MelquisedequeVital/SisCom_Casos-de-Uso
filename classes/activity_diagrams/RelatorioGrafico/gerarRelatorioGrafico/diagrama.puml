@@ -23,6 +23,5 @@ else (Não)
   :Renderizar o gráfico consolidado na tela do Administrador;
 endif
 
-#palegreen:Losango de Fusão;
 stop
 @enduml

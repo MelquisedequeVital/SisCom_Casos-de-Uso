@@ -1,0 +1,43 @@
+@startuml
+title Diagrama de Atividade - Lógica de enviarNotificacao() (Centralizada)
+
+start
+
+:Recebe o usuário destinatário e o canal desejado (Push, E-mail ou Tela);
+
+partition "Preparação do Alerta" {
+  :Verifica as permissões de notificação no perfil do destinatário;
+  :Monta a estrutura de dados (Título, Mensagem, ID de Origem e Data/Hora);
+}
+
+if (O canal solicitado é "PUSH"?) then (sim)
+  
+  partition "Disparo de Notificação Push" {
+    :Recupera o token do dispositivo móvel do usuário;
+    :Conecta com o serviço de mensageria em nuvem (ex: Firebase);
+    :Despacha o sinal de Push para o celular do destinatário;
+  }
+
+else if (O canal solicitado é "EMAIL"?) then (sim)
+  
+  partition "Disparo de E-mail" {
+    :Recupera o e-mail institucional do usuário;
+    :Renderiza o modelo de e-mail com as informações do alerta;
+    :Envia a mensagem através do servidor de e-mails do sistema;
+  }
+
+else if (O canal solicitado é "TELA"?) then (sim)
+  
+  partition "Alerta em Tempo Real" {
+    :Verifica se a sessão do usuário no navegador/painel está ativa;
+    :Injeta o pop-up/banner visual diretamente na interface do usuário;
+  }
+endif
+
+partition "Finalização e Histórico" {
+  :Grava o registro da notificação no banco de dados;
+  :Define o status inicial da notificação como "Não lida" (para o sininho do painel);
+}
+
+stop
+@enduml

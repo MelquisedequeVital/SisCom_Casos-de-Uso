@@ -1,0 +1,41 @@
+@startuml
+title Diagrama de Atividade - Lógica de enviarMensagem()
+
+start
+
+:Recebe os dados da mensagem preenchidos;
+
+partition "Validação" {
+  if (O conteúdo da mensagem é válido e não está vazio?) then (sim)
+    :Varre o texto para identificar e ofuscar dados sensíveis (LGPD);
+  else (não)
+    :Bloqueia o envio e exibe alerta de mensagem inválida;
+    stop
+  endif
+}
+
+:Adiciona a mensagem na tela do chat imediatamente;
+
+if (Existe conexão ativa com a internet?) then (sim)
+  
+  partition "Sincronização em Nuvem" {
+    :Envia os dados da mensagem para a API do sistema;
+    :A API grava a mensagem de forma definitiva no banco de dados;
+  }
+  
+  :Atualiza o ícone da mensagem na tela para "Enviada";
+  :Dispara uma notificação push para os outros participantes online do chat;
+
+else (não)
+  
+  partition "Fluxo Offline" {
+    :Guarda a mensagem temporariamente na lista de cache offline;
+  }
+  
+  :Atualiza o ícone da mensagem na tela para "Pendente" (Relógio);
+endif
+
+:Registra a ação de envio no histórico de auditoria;
+
+stop
+@enduml

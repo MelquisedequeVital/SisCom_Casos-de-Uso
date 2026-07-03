@@ -1,0 +1,25 @@
+@startuml
+title Diagrama de Atividade - Lógica de salvarCacheOffline()
+
+start
+
+:Recebe a mensagem que não pôde ser enviada por falta de rede;
+
+partition "Preparação dos Dados" {
+  :Altera o status de sincronização da mensagem para "Pendente";
+  :Associa um identificador temporário de controle local;
+}
+
+partition "Persistência Local" {
+  :Grava os dados da mensagem no banco de dados interno do dispositivo;
+  :Adiciona a mensagem à lista interna de pendências (cacheOffline);
+}
+
+:Aciona o monitor de conectividade do sistema;
+note right
+  Ativa o mecanismo que fica testando a internet
+  para tentar reenviar a mensagem assim que o sinal voltar.
+end note
+
+stop
+@enduml

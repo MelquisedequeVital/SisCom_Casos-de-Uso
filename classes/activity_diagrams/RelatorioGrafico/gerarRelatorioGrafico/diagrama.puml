@@ -1,0 +1,28 @@
+@startuml
+title Diagrama de Atividade - Gerar Relatório Gráfico
+
+|Administrador|
+start
+:Acessar painel de relatórios;
+:Selecionar período inicial e final;
+:Acionar comando de geração de relatório;
+
+|Sistema|
+if (Datas informadas são inválidas ou período está invertido?) then (Sim)
+  :Exibir mensagem de intervalo de datas incorreto;
+else (Não)
+  :Chamar internamente calcularMetricasSetorial();
+  
+  |Banco de Dados (CEHAP)|
+  :Buscar volume de chamados no período especificado;
+  
+  |Sistema|
+  :Contabilizar chamados por status (Resolvidos e Pendentes);
+  :Alimentar atributos totalChamadosResolvidos e totalChamadosPendentes;
+  :Montar estrutura matemática do gráfico de pizza/barras;
+  :Renderizar o gráfico consolidado na tela do Administrador;
+endif
+
+#palegreen:Losango de Fusão;
+stop
+@enduml

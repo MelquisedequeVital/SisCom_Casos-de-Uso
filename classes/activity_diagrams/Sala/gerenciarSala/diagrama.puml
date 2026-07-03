@@ -1,0 +1,35 @@
+@startuml
+title Diagrama de Atividade - Gerenciar Sala (Fiel ao UC12_A3)
+
+|Administrador|
+start
+:Acessar o painel adicional "Agendamentos Globais e Salas";
+if (Qual ação de gerenciamento deseja realizar?) then (Vincular Nova Sala/Link)
+  :Selecionar a opção "Nova Sala";
+  :Inserir a identificação da sala e a URL externa;
+  
+  |Sistema|
+  :Atualizar o formulário da reunião ativa;
+  :Modificar a URL externa da plataforma em tempo real;
+  :Exibir link atualizado no formulário;
+
+else (Modificar Link Existente)
+  |Administrador|
+  :Selecionar a sala cadastrada no painel;
+  :Clicar no botão "Mudar Link";
+  :Digitar a nova URL da plataforma externa (Meet/Zoom/Teams);
+  :Confirmar alteração do endereço digital;
+  
+  |Sistema|
+  if (O link inserido possui formato de URL válido?) then (Não)
+    :Exibir mensagem de erro: "URL externa inválida";
+  else (Sim)
+    :Substituir link no registro da reunião correspondente;
+    :Atualizar os dados em tempo real na interface;
+  endif
+endif
+
+|Sistema|
+#palegreen:Losango de Fusão;
+stop
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+title Diagrama de Atividade - Calcular Métricas Setoriais
+
+|Sistema|
+start
+:Iniciar varredura de setores cadastrados;
+
+|Banco de Dados (CEHAP)|
+:Agrupar chamados finalizados por ID de Setor no período;
+:Calcular tempo médio de atendimento (SLA) de cada setor;
+
+|Sistema|
+if (Setor não possui nenhum chamado registrado no período?) then (Sim)
+  :Atribuir valor zero às métricas do setor;
+else (Não)
+  :Calcular porcentagem de eficiência do setor;
+  :Rankear setores por maior índice de resolução;
+endif
+
+:Compilar dados em matriz de desempenho setorial;
+stop
+@enduml
